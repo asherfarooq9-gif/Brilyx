@@ -17,13 +17,16 @@ export function Hero() {
   // Only run the WebGL scene while the hero is on screen — unmounting it when
   // scrolled away frees the GPU context and stops its render loop.
   const sceneInView = useInView(sceneRef, { margin: "300px 0px" });
-  // Skip the heavy interactive scene on phones (perf + it would trap scroll).
-  const [canRunScene, setCanRunScene] = useState(false);
+  // The scene renders on mobile too, but display-only there — a coarse pointer gets
+  // pointer-events:none so a touch-drag can't trap page scroll (see SplineScene).
+  // Extra cost on phones (WebGL + CDN viewer) is accepted; load is idle-deferred and
+  // the scene unmounts when scrolled away.
+  const [isFinePointer, setIsFinePointer] = useState(false);
   const words = SITE.tagline.split(" ");
 
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px) and (pointer: fine)");
-    const sync = () => setCanRunScene(mq.matches);
+    const mq = window.matchMedia("(pointer: fine)");
+    const sync = () => setIsFinePointer(mq.matches);
     sync();
     mq.addEventListener("change", sync);
     return () => mq.removeEventListener("change", sync);
@@ -38,7 +41,7 @@ export function Hero() {
           transition: { duration: 0.5, delay },
         };
 
-  const showScene = sceneInView && !prefersReduced && canRunScene;
+  const showScene = sceneInView && !prefersReduced;
 
   return (
     <section className="mx-auto max-w-6xl px-4 pt-10 pb-16 sm:px-6 sm:pt-14 sm:pb-20 lg:px-8">
@@ -100,7 +103,7 @@ export function Hero() {
           {/* Right: interactive 3D robot */}
           <div
             ref={sceneRef}
-            className="relative h-[200px] w-full sm:h-[380px] md:h-auto md:flex-1"
+            className="relative h-[260px] w-full sm:h-[380px] md:h-auto md:flex-1"
           >
             <div
               className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_60%_45%,rgba(161,161,170,0.16),transparent_60%)]"
@@ -111,7 +114,11 @@ export function Hero() {
 
             {showScene ? (
               <>
-                <SplineScene scene={SPLINE_SCENE} className="absolute inset-0 h-full w-full" />
+                <SplineScene
+                  scene={SPLINE_SCENE}
+                  interactive={isFinePointer}
+                  className="absolute inset-0 h-full w-full"
+                />
                 {/* Mask the "Built with Spline" badge corner. */}
                 <span
                   className="pointer-events-none absolute bottom-0 right-0 z-10 h-12 w-40 bg-zinc-950"

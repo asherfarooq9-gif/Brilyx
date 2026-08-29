@@ -65,9 +65,12 @@ function stripSplineBadge(host: HTMLElement) {
 interface SplineSceneProps {
   scene: string;
   className?: string;
+  /** When false the scene renders + idle-animates but ignores pointer/touch, so
+   *  it never traps page scrolling (used on mobile / coarse pointers). */
+  interactive?: boolean;
 }
 
-export function SplineScene({ scene, className }: SplineSceneProps) {
+export function SplineScene({ scene, className, interactive = true }: SplineSceneProps) {
   const hostRef = useRef<HTMLElement | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
 
@@ -92,13 +95,18 @@ export function SplineScene({ scene, className }: SplineSceneProps) {
   }, [status]);
 
   return (
-    <div className={className}>
+    <div className={className} style={interactive ? undefined : { touchAction: "pan-y" }}>
       {status === "ready" ? (
         // @ts-expect-error — custom element registered at runtime by the CDN script.
         <spline-viewer
           ref={hostRef}
           url={scene}
-          style={{ width: "100%", height: "100%", display: "block" }}
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "block",
+            pointerEvents: interactive ? undefined : "none",
+          }}
         />
       ) : (
         <div className="flex h-full w-full items-center justify-center">

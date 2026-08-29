@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type TouchEvent } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -22,6 +22,7 @@ export function ServiceCarousel() {
   const [active, setActive] = useState(Math.floor(SERVICES.length / 2));
   const [wide, setWide] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 640px)");
@@ -44,6 +45,18 @@ export function ServiceCarousel() {
     }
   };
 
+  const onTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    touchStartX.current = event.touches[0]?.clientX ?? null;
+  };
+
+  const onTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    if (touchStartX.current === null) return;
+    const delta = (event.changedTouches[0]?.clientX ?? 0) - touchStartX.current;
+    touchStartX.current = null;
+    if (delta < -40) go(active + 1);
+    else if (delta > 40) go(active - 1);
+  };
+
   const activeService = SERVICES[active];
   const transition = prefersReduced
     ? { duration: 0 }
@@ -61,7 +74,7 @@ export function ServiceCarousel() {
             Five capabilities, one delivery team
           </h2>
           <p className="max-w-xl text-pretty text-sm text-muted-foreground sm:text-base">
-            Pick a card to see what each engagement covers.
+            Swipe or tap a card to see what each engagement covers.
           </p>
         </div>
 
@@ -71,7 +84,9 @@ export function ServiceCarousel() {
           role="tablist"
           aria-label="Services"
           onKeyDown={onKeyDown}
-          className="relative mx-auto mt-12 h-[340px] w-full max-w-xl sm:mt-14 sm:h-[500px]"
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+          className="relative mx-auto mt-12 h-[340px] w-full max-w-xl touch-pan-y sm:mt-14 sm:h-[500px]"
         >
           {SERVICES.map((service, index) => {
             const offset = index - active;

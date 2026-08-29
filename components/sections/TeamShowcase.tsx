@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { TEAM, getInitials, type TeamMember } from "@/lib/team";
 import { cn } from "@/lib/cn";
 
@@ -61,6 +61,34 @@ function Portrait({
   );
 }
 
+/** Mobile row — colourises its portrait when it scrolls to the viewport centre. */
+function MobileTeamPortrait({
+  member,
+  active,
+  onEnter,
+}: {
+  member: TeamMember;
+  active: boolean;
+  onEnter: (slug: string) => void;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { margin: "-45% 0px -45% 0px" });
+
+  useEffect(() => {
+    if (inView) onEnter(member.slug);
+  }, [inView, member.slug, onEnter]);
+
+  return (
+    <div ref={ref} className="mx-auto w-full max-w-xs">
+      <Portrait member={member} active={active} className="aspect-[4/5] w-full shadow-lg" />
+      <p className="mt-3 text-center text-sm font-medium text-foreground">
+        {member.name}
+        <span className="text-muted-foreground"> — {member.role}</span>
+      </p>
+    </div>
+  );
+}
+
 export function TeamShowcase() {
   const prefersReduced = useReducedMotion();
   const [activeSlug, setActiveSlug] = useState(TEAM[0].slug);
@@ -77,7 +105,7 @@ export function TeamShowcase() {
             The people behind the work
           </h2>
           <p className="max-w-xl text-pretty text-sm text-muted-foreground sm:text-base">
-            Hover or select a name to bring that portrait into colour.
+            Hover, tap, or scroll to bring a portrait into colour.
           </p>
         </div>
 
@@ -128,22 +156,16 @@ export function TeamShowcase() {
             })}
           </div>
 
-          {/* Mobile: grid of every portrait */}
-          <div className="grid grid-cols-2 gap-3 lg:hidden" aria-hidden>
-            {TEAM.map((member) => {
-              const isActive = member.slug === activeSlug;
-              return (
-                <Portrait
-                  key={member.slug}
-                  member={member}
-                  active={isActive}
-                  className={cn(
-                    "aspect-[4/5] w-full",
-                    isActive ? "ring-2 ring-foreground" : "opacity-90",
-                  )}
-                />
-              );
-            })}
+          {/* Mobile: vertical stack — each portrait colourises as it scrolls to centre */}
+          <div className="flex flex-col gap-10 lg:hidden">
+            {TEAM.map((member) => (
+              <MobileTeamPortrait
+                key={member.slug}
+                member={member}
+                active={member.slug === activeSlug}
+                onEnter={setActiveSlug}
+              />
+            ))}
           </div>
 
           {/* Name list */}
