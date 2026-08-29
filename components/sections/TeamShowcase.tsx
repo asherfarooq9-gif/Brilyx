@@ -6,13 +6,14 @@ import { motion, useReducedMotion } from "framer-motion";
 import { TEAM, getInitials, type TeamMember } from "@/lib/team";
 import { cn } from "@/lib/cn";
 
-// Preset scattered slots on the photo canvas (desktop only), one per member.
+// Loose horizontal cluster on the photo canvas (desktop only), one per member —
+// staggered heights + sizes, slightly overlapping, roughly centred.
 const SLOTS = [
-  { top: "1%", left: "0%", width: 200, rotate: -5 },
-  { top: "0%", left: "52%", width: 210, rotate: 4 },
-  { top: "33%", left: "25%", width: 224, rotate: -2 },
-  { top: "60%", left: "1%", width: 190, rotate: 5 },
-  { top: "56%", left: "53%", width: 196, rotate: -4 },
+  { top: "40%", left: "0%", width: 172 },
+  { top: "15%", left: "18%", width: 202 },
+  { top: "2%", left: "44%", width: 228 },
+  { top: "32%", left: "53%", width: 206 },
+  { top: "55%", left: "27%", width: 198 },
 ] as const;
 
 function Portrait({
@@ -82,7 +83,7 @@ export function TeamShowcase() {
 
         <div className="mt-14 grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-6">
           {/* Photo canvas (desktop) — every portrait shown at once */}
-          <div className="relative hidden min-h-[600px] lg:block" aria-hidden>
+          <div className="relative hidden min-h-[560px] lg:block" aria-hidden>
             {TEAM.map((member, index) => {
               const slot = SLOTS[index % SLOTS.length];
               const isActive = member.slug === activeSlug;
@@ -94,19 +95,26 @@ export function TeamShowcase() {
                     top: slot.top,
                     left: slot.left,
                     width: slot.width,
-                    zIndex: isActive ? 30 : 10,
+                    zIndex: isActive ? 30 : 10 + index,
                   }}
                   initial={false}
-                  animate={
-                    prefersReduced
-                      ? {}
-                      : {
-                          scale: isActive ? 1.04 : 0.92,
-                          rotate: isActive ? 0 : slot.rotate,
-                        }
-                  }
+                  animate={prefersReduced ? {} : { scale: isActive ? 1.05 : 1 }}
                   transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 >
+                  <span
+                    className={cn(
+                      "absolute -top-3 left-2 z-10 flex items-center gap-1.5 rounded-full bg-background/90 px-1.5 py-0.5 text-xs font-medium backdrop-blur transition-colors",
+                      isActive ? "text-foreground" : "text-muted-foreground",
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "h-3 w-4 rounded-full",
+                        isActive ? "bg-foreground" : "bg-secondary",
+                      )}
+                    />
+                    {member.name}
+                  </span>
                   <Portrait
                     member={member}
                     active={isActive}
@@ -115,14 +123,6 @@ export function TeamShowcase() {
                       isActive ? "shadow-2xl" : "shadow-lg",
                     )}
                   />
-                  <span
-                    className={cn(
-                      "mt-2 block text-sm font-medium transition-colors",
-                      isActive ? "text-foreground" : "text-muted-foreground",
-                    )}
-                  >
-                    {member.name}
-                  </span>
                 </motion.div>
               );
             })}
