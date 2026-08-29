@@ -86,14 +86,14 @@ export function ServiceCarousel() {
           onKeyDown={onKeyDown}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
-          className="relative mx-auto mt-12 h-[340px] w-full max-w-xl touch-pan-y sm:mt-14 sm:h-[500px]"
+          className="relative mx-auto mt-12 h-[380px] w-full max-w-xl touch-pan-y sm:mt-14 sm:h-[560px]"
         >
           {SERVICES.map((service, index) => {
             const offset = index - active;
             const isActive = index === active;
-            const spread = wide ? 58 : 34;
+            const spread = wide ? 66 : 40;
             const x = offset * spread;
-            const y = Math.abs(offset) * (wide ? 24 : 16);
+            const y = Math.abs(offset) * (wide ? 26 : 18);
             const rotate = offset * (wide ? 7 : 5);
             const scale = isActive ? 1 : 0.9;
 
@@ -108,7 +108,7 @@ export function ServiceCarousel() {
                 tabIndex={isActive ? 0 : -1}
                 onClick={() => setActive(index)}
                 className={cn(
-                  "absolute left-1/2 top-0 h-[280px] w-[150px] origin-bottom overflow-hidden rounded-[22px] border border-border outline-none sm:h-[440px] sm:w-[224px] sm:rounded-[26px]",
+                  "absolute left-1/2 top-0 h-[320px] w-[178px] origin-bottom overflow-hidden rounded-[22px] border border-border outline-none sm:h-[500px] sm:w-[264px] sm:rounded-[28px]",
                   "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                   !isActive && "brightness-[0.7] saturate-[0.9]",
                 )}
@@ -119,9 +119,9 @@ export function ServiceCarousel() {
                 <ServiceImage
                   src={service.image}
                   alt=""
-                  sizes="(max-width: 640px) 150px, 224px"
+                  sizes="(max-width: 640px) 178px, 264px"
                   imageClassName="object-cover"
-                  overlayClassName="absolute inset-0 bg-black/45"
+                  overlayClassName="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/75 to-transparent"
                   fallback={
                     <>
                       <span
@@ -138,8 +138,8 @@ export function ServiceCarousel() {
                     </>
                   }
                 />
-                <span className="relative flex h-full flex-col items-center justify-between p-6">
-                  <ServiceIcon slug={service.slug} className="size-7 text-white/90" />
+                <span className="relative flex h-full flex-col items-center justify-end gap-2 p-5">
+                  <ServiceIcon slug={service.slug} className="size-6 text-white/90" />
                   <span className="text-center text-sm font-semibold leading-snug text-white">
                     {service.title}
                   </span>
