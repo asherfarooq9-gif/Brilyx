@@ -9,11 +9,11 @@ import { cn } from "@/lib/cn";
 // Loose horizontal cluster on the photo canvas (desktop only), one per member —
 // staggered heights + sizes, slightly overlapping, roughly centred.
 const SLOTS = [
-  { top: "40%", left: "0%", width: 172 },
-  { top: "15%", left: "18%", width: 202 },
-  { top: "2%", left: "44%", width: 228 },
-  { top: "32%", left: "53%", width: 206 },
-  { top: "55%", left: "27%", width: 198 },
+  { top: "40%", left: "0%", width: 150 },
+  { top: "14%", left: "16%", width: 172 },
+  { top: "0%", left: "39%", width: 192 },
+  { top: "30%", left: "60%", width: 170 },
+  { top: "56%", left: "31%", width: 166 },
 ] as const;
 
 function Portrait({
@@ -81,7 +81,7 @@ export function TeamShowcase() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-6">
+        <div className="mt-14 grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:gap-8">
           {/* Photo canvas (desktop) — every portrait shown at once */}
           <div className="relative hidden min-h-[560px] lg:block" aria-hidden>
             {TEAM.map((member, index) => {
