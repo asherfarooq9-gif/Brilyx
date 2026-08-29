@@ -8,11 +8,11 @@ import { cn } from "@/lib/cn";
 
 // Preset scattered slots on the photo canvas (desktop only), one per member.
 const SLOTS = [
-  { top: "0%", left: "4%", width: 210, rotate: -4 },
-  { top: "24%", left: "40%", width: 250, rotate: 3 },
-  { top: "6%", left: "70%", width: 200, rotate: -3 },
-  { top: "52%", left: "14%", width: 220, rotate: 5 },
-  { top: "46%", left: "62%", width: 205, rotate: -6 },
+  { top: "1%", left: "0%", width: 200, rotate: -5 },
+  { top: "0%", left: "52%", width: 210, rotate: 4 },
+  { top: "33%", left: "25%", width: 224, rotate: -2 },
+  { top: "60%", left: "1%", width: 190, rotate: 5 },
+  { top: "56%", left: "53%", width: 196, rotate: -4 },
 ] as const;
 
 function Portrait({
@@ -44,7 +44,11 @@ function Portrait({
       ) : (
         <>
           <span
-            className={cn("absolute inset-0 bg-gradient-to-b", member.gradient)}
+            className={cn(
+              "absolute inset-0 bg-gradient-to-b transition-[filter] duration-500",
+              member.gradient,
+              active ? "grayscale-0" : "grayscale",
+            )}
             aria-hidden
           />
           <span className="absolute inset-0 flex items-center justify-center text-4xl font-semibold text-white/90">
@@ -59,7 +63,6 @@ function Portrait({
 export function TeamShowcase() {
   const prefersReduced = useReducedMotion();
   const [activeSlug, setActiveSlug] = useState(TEAM[0].slug);
-  const activeMember = TEAM.find((m) => m.slug === activeSlug) ?? TEAM[0];
 
   return (
     <section className="overflow-hidden bg-background">
@@ -72,11 +75,14 @@ export function TeamShowcase() {
           <h2 className="text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             The people behind the work
           </h2>
+          <p className="max-w-xl text-pretty text-sm text-muted-foreground sm:text-base">
+            Hover or select a name to bring that portrait into colour.
+          </p>
         </div>
 
         <div className="mt-14 grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-6">
-          {/* Photo canvas (desktop) */}
-          <div className="relative hidden min-h-[520px] lg:block" aria-hidden>
+          {/* Photo canvas (desktop) — every portrait shown at once */}
+          <div className="relative hidden min-h-[600px] lg:block" aria-hidden>
             {TEAM.map((member, index) => {
               const slot = SLOTS[index % SLOTS.length];
               const isActive = member.slug === activeSlug;
@@ -84,15 +90,19 @@ export function TeamShowcase() {
                 <motion.div
                   key={member.slug}
                   className="absolute"
-                  style={{ top: slot.top, left: slot.left, width: slot.width }}
+                  style={{
+                    top: slot.top,
+                    left: slot.left,
+                    width: slot.width,
+                    zIndex: isActive ? 30 : 10,
+                  }}
                   initial={false}
                   animate={
                     prefersReduced
-                      ? { opacity: isActive ? 1 : 0 }
+                      ? {}
                       : {
-                          opacity: isActive ? 1 : 0,
-                          scale: isActive ? 1 : 0.92,
-                          rotate: isActive ? slot.rotate : slot.rotate - 2,
+                          scale: isActive ? 1.04 : 0.92,
+                          rotate: isActive ? 0 : slot.rotate,
                         }
                   }
                   transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -100,9 +110,17 @@ export function TeamShowcase() {
                   <Portrait
                     member={member}
                     active={isActive}
-                    className="aspect-[4/5] w-full shadow-xl"
+                    className={cn(
+                      "aspect-[4/5] w-full transition-shadow duration-300",
+                      isActive ? "shadow-2xl" : "shadow-lg",
+                    )}
                   />
-                  <span className="mt-2 block text-sm font-medium text-foreground">
+                  <span
+                    className={cn(
+                      "mt-2 block text-sm font-medium transition-colors",
+                      isActive ? "text-foreground" : "text-muted-foreground",
+                    )}
+                  >
                     {member.name}
                   </span>
                 </motion.div>
@@ -110,16 +128,22 @@ export function TeamShowcase() {
             })}
           </div>
 
-          {/* Mobile: single active portrait */}
-          <div className="lg:hidden">
-            <Portrait
-              member={activeMember}
-              active
-              className="mx-auto aspect-[4/5] w-56 shadow-lg"
-            />
-            <p className="mt-3 text-center text-sm font-medium text-foreground">
-              {activeMember.name} — {activeMember.role}
-            </p>
+          {/* Mobile: grid of every portrait */}
+          <div className="grid grid-cols-2 gap-3 lg:hidden" aria-hidden>
+            {TEAM.map((member) => {
+              const isActive = member.slug === activeSlug;
+              return (
+                <Portrait
+                  key={member.slug}
+                  member={member}
+                  active={isActive}
+                  className={cn(
+                    "aspect-[4/5] w-full",
+                    isActive ? "ring-2 ring-foreground" : "opacity-90",
+                  )}
+                />
+              );
+            })}
           </div>
 
           {/* Name list */}
@@ -139,7 +163,9 @@ export function TeamShowcase() {
                     <span
                       className={cn(
                         "h-4 w-7 shrink-0 rounded-full transition-colors",
-                        isActive ? "bg-foreground" : "bg-secondary group-hover:bg-muted-foreground/40",
+                        isActive
+                          ? "bg-foreground"
+                          : "bg-secondary group-hover:bg-muted-foreground/40",
                       )}
                       aria-hidden
                     />
@@ -147,7 +173,9 @@ export function TeamShowcase() {
                       <span
                         className={cn(
                           "text-xl font-semibold tracking-tight transition-colors sm:text-2xl",
-                          isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground",
+                          isActive
+                            ? "text-foreground"
+                            : "text-muted-foreground group-hover:text-foreground",
                         )}
                       >
                         {member.name}
