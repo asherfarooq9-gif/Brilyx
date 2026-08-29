@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Brilyx
 
-## Getting Started
+Marketing site for Brilyx — an engineering studio building AI/ML systems, apps, web
+platforms, automations, and chatbots.
 
-First, run the development server:
+**Tagline:** Engineering Intelligence. Building Tomorrow.
+
+## Stack
+
+- [Next.js 16](https://nextjs.org) (App Router, React 19, React Compiler)
+- TypeScript
+- Tailwind CSS v4 (design tokens in `app/globals.css`)
+- Framer Motion (scroll reveals, page transitions, micro-interactions, notch nav pill)
+- `lucide-react` icons
+- Space Grotesk (headings) + Inter (body) + JetBrains Mono (labels) via `next/font`
+- Monochrome palette — neutral grey accent, no brand colour
+- Contact form → [Formspree](https://formspree.io)
+- Hero 3D scene → Spline `<spline-viewer>` web component, loaded from the unpkg CDN
+  at runtime (see `components/ui/splite.tsx`). No build-time WebGL/DRACO assets; the
+  scene URL is `SPLINE_SCENE` in `components/sections/Hero.tsx`. Falls back to a static
+  placeholder under `prefers-reduced-motion` or if the CDN script fails.
+
+> The Spline viewer is the one external runtime dependency. If you add a Content
+> Security Policy, allow `script-src https://unpkg.com` and the `connect-src` /
+> `worker-src` origins Spline needs (`https://unpkg.com`, `https://prod.spline.design`).
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # then fill in NEXT_PUBLIC_FORMSPREE_ID
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `NEXT_PUBLIC_FORMSPREE_ID` | for the contact form | Formspree form ID (the segment after `/f/`). Without it, the form shows a "not connected" message and never posts. |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts
 
-## Learn More
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Dev server (Turbopack) |
+| `npm run build` | Production build |
+| `npm start` | Serve the production build |
+| `npm run lint` | ESLint |
 
-To learn more about Next.js, take a look at the following resources:
+## Project structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+app/
+  layout.tsx            Root layout: fonts, navbar, footer, base metadata, JSON-LD
+  template.tsx          Per-route page-transition wrapper
+  page.tsx              Home
+  services/ about/ contact/   Route pages
+  sitemap.ts robots.ts opengraph-image.tsx
+  globals.css           Design tokens (@theme) + brand utilities
+components/
+  layout/               NotchNavbar (floating notch nav, routing-aware), Footer
+  ui/                   Button, ServiceCard, SectionHeading, GradientText, ServiceIcon,
+                        card, spotlight, splite (Spline viewer),
+                        adaptive-notch-navigation-bar (notch primitives)
+  motion/               Reveal, Stagger (Framer Motion helpers)
+  sections/             Hero (text + 3D Spline showcase card, no copy on the card),
+                        ServiceHighlights, AboutBrief, Testimonials, CtaBanner, ContactForm
+lib/
+  site.ts               Name, tagline, nav links, socials
+  services.ts           Single source of truth for the five services
+  seo.ts                buildMetadata() helper
+  motion.ts             Shared animation variants
+  cn.ts                 className joiner
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Editing content
 
-## Deploy on Vercel
+- **Services:** `lib/services.ts`
+- **Site name / nav / socials / email:** `lib/site.ts`
+- **Testimonials:** `components/sections/Testimonials.tsx` (currently placeholders)
+- **Team:** `app/about/page.tsx` (`TEAM` array — currently `TBD` placeholders)
+- **Colors / radius / gradient:** CSS variables at the top of `app/globals.css`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Accessibility & motion
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- All animations respect `prefers-reduced-motion` and fall back to static renders.
+- Hero pointer-parallax is also disabled on coarse (touch) pointers.
+- Semantic landmarks, skip link, visible focus rings, labelled form fields.
+
+## Deploy (Vercel)
+
+1. Push this repo to GitHub.
+2. Import it in Vercel — framework preset is detected automatically.
+3. Add `NEXT_PUBLIC_FORMSPREE_ID` under Project → Settings → Environment Variables.
+4. Set the production domain and update `SITE.url` in `lib/site.ts` to match.
