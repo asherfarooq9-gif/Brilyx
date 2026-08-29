@@ -15,7 +15,15 @@ const SLOTS = [
   { top: "46%", left: "62%", width: 205, rotate: -6 },
 ] as const;
 
-function Portrait({ member, className }: { member: TeamMember; className?: string }) {
+function Portrait({
+  member,
+  className,
+  active = false,
+}: {
+  member: TeamMember;
+  className?: string;
+  active?: boolean;
+}) {
   const [failed, setFailed] = useState(false);
   const showPhoto = Boolean(member.photo) && !failed;
 
@@ -27,7 +35,10 @@ function Portrait({ member, className }: { member: TeamMember; className?: strin
           alt={`${member.name}, ${member.role}`}
           fill
           sizes="260px"
-          className="object-cover"
+          className={cn(
+            "object-cover transition-[filter] duration-500",
+            active ? "grayscale-0" : "grayscale",
+          )}
           onError={() => setFailed(true)}
         />
       ) : (
@@ -86,7 +97,11 @@ export function TeamShowcase() {
                   }
                   transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <Portrait member={member} className="aspect-[4/5] w-full shadow-xl" />
+                  <Portrait
+                    member={member}
+                    active={isActive}
+                    className="aspect-[4/5] w-full shadow-xl"
+                  />
                   <span className="mt-2 block text-sm font-medium text-foreground">
                     {member.name}
                   </span>
@@ -99,6 +114,7 @@ export function TeamShowcase() {
           <div className="lg:hidden">
             <Portrait
               member={activeMember}
+              active
               className="mx-auto aspect-[4/5] w-56 shadow-lg"
             />
             <p className="mt-3 text-center text-sm font-medium text-foreground">

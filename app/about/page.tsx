@@ -105,7 +105,7 @@ export default function AboutPage() {
           <Stagger className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {TEAM.map((member) => (
               <StaggerItem key={member.slug}>
-                <div className="flex h-full flex-col items-center gap-3 rounded-xl border border-border bg-card p-6 text-center">
+                <div className="group flex h-full flex-col items-center gap-3 rounded-xl border border-border bg-card p-6 text-center transition-colors hover:border-foreground/20">
                   <TeamAvatar member={member} className="h-16 w-16" />
                   <span className="text-sm font-semibold text-foreground">{member.name}</span>
                   <span className="text-xs text-muted-foreground">{member.role}</span>

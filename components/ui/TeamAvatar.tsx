@@ -29,7 +29,7 @@ export function TeamAvatar({
           alt={`${member.name}, ${member.role}`}
           fill
           sizes="64px"
-          className="object-cover"
+          className="object-cover grayscale transition-[filter] duration-500 group-hover:grayscale-0 group-focus-within:grayscale-0"
           onError={() => setFailed(true)}
         />
       ) : (
