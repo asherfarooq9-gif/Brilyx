@@ -105,7 +105,7 @@ export function ServiceCarousel() {
                   src={service.image}
                   alt=""
                   sizes="(max-width: 640px) 150px, 224px"
-                  imageClassName="object-cover grayscale"
+                  imageClassName="object-cover"
                   overlayClassName="absolute inset-0 bg-black/45"
                   fallback={
                     <>
