@@ -16,6 +16,7 @@ export const TEAM: readonly TeamMember[] = [
     role: "ML Engineer",
     blurb: "Designs, trains, and evaluates the models behind our AI products.",
     gradient: "from-sky-500 to-indigo-700",
+    photo: "/team/rubab.jpg",
   },
   {
     slug: "fahad",
@@ -23,6 +24,7 @@ export const TEAM: readonly TeamMember[] = [
     role: "AI Engineer",
     blurb: "Builds LLM pipelines, retrieval systems, and evaluation harnesses.",
     gradient: "from-violet-500 to-purple-800",
+    photo: "/team/fahad.jpg",
   },
   {
     slug: "kashif",
@@ -30,6 +32,7 @@ export const TEAM: readonly TeamMember[] = [
     role: "Software Developer",
     blurb: "Turns architecture into shipped, maintainable software.",
     gradient: "from-emerald-500 to-teal-800",
+    photo: "/team/kashif.jpg",
   },
   {
     slug: "muneeb",
@@ -37,6 +40,7 @@ export const TEAM: readonly TeamMember[] = [
     role: "AI Automation Expert",
     blurb: "Wires tools together and adds AI where it removes real work.",
     gradient: "from-amber-500 to-orange-700",
+    photo: "/team/muneeb.jpg",
   },
   {
     slug: "asher",
