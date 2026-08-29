@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { motion, useInView, useReducedMotion } from "framer-motion";
+import { Rotate3d } from "lucide-react";
 import { SITE } from "@/lib/site";
 import { Button } from "@/components/ui/Button";
 import { GradientText } from "@/components/ui/GradientText";
@@ -10,6 +12,7 @@ import { Spotlight } from "@/components/ui/spotlight";
 import { SplineScene } from "@/components/ui/splite";
 
 const SPLINE_SCENE = "https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode";
+const ROBOT_POSTER = "/robot.png";
 
 export function Hero() {
   const prefersReduced = useReducedMotion();
@@ -17,10 +20,13 @@ export function Hero() {
   // Only run the WebGL scene while the hero is on screen — unmounting it when
   // scrolled away frees the GPU context and stops its render loop.
   const sceneInView = useInView(sceneRef, { margin: "300px 0px" });
-  // The scene renders on mobile too, but display-only there — a coarse pointer gets
-  // pointer-events:none so a touch-drag can't trap page scroll (see SplineScene).
-  // Extra cost on phones (WebGL + CDN viewer) is accepted; load is idle-deferred and
-  // the scene unmounts when scrolled away.
+  // The live WebGL scene is opt-in — a static poster shows by default so the page
+  // carries zero 3D cost on load. Clicking "View in 3D" mounts SplineScene, which
+  // then idle-loads the CDN viewer and unmounts again when scrolled off screen.
+  const [load3D, setLoad3D] = useState(false);
+  const [posterFailed, setPosterFailed] = useState(false);
+  // On a coarse pointer the loaded scene is display-only (pointer-events:none) so a
+  // touch-drag can't trap page scroll — see SplineScene.
   const [isFinePointer, setIsFinePointer] = useState(false);
   const words = SITE.tagline.split(" ");
 
@@ -41,7 +47,7 @@ export function Hero() {
           transition: { duration: 0.5, delay },
         };
 
-  const showScene = sceneInView && !prefersReduced;
+  const showScene = load3D && sceneInView && !prefersReduced;
 
   return (
     <section className="mx-auto max-w-6xl px-4 pt-10 pb-16 sm:px-6 sm:pt-14 sm:pb-20 lg:px-8">
@@ -100,17 +106,41 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Right: interactive 3D robot */}
+          {/* Right: robot — static poster by default, live 3D on request */}
           <div
             ref={sceneRef}
-            className="relative h-[260px] w-full sm:h-[380px] md:h-auto md:flex-1"
+            className="relative h-[260px] w-full sm:h-[380px] md:h-auto md:min-h-[380px] md:flex-1"
           >
             <div
               className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_60%_45%,rgba(161,161,170,0.16),transparent_60%)]"
-              aria-hidden
+              aria-hidden={!posterFailed}
             >
-              <span className="text-5xl opacity-40 sm:text-6xl">🤖</span>
+              {posterFailed ? (
+                <span className="text-5xl opacity-40 sm:text-6xl">🤖</span>
+              ) : null}
             </div>
+
+            {!showScene && !posterFailed ? (
+              <Image
+                src={ROBOT_POSTER}
+                alt="Brilyx — engineering intelligence"
+                fill
+                sizes="(max-width: 768px) 100vw, 640px"
+                className="object-contain"
+                onError={() => setPosterFailed(true)}
+              />
+            ) : null}
+
+            {!load3D && !prefersReduced ? (
+              <button
+                type="button"
+                onClick={() => setLoad3D(true)}
+                className="absolute bottom-4 left-1/2 z-10 inline-flex h-9 -translate-x-1/2 items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 text-xs font-medium text-white outline-none transition-colors hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/70"
+              >
+                <Rotate3d className="size-4" aria-hidden />
+                View in 3D
+              </button>
+            ) : null}
 
             {showScene ? (
               <>
