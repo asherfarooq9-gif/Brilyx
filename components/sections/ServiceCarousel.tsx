@@ -50,17 +50,17 @@ export function ServiceCarousel() {
     : { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const };
 
   return (
-    <section className="overflow-hidden bg-zinc-950 text-white">
+    <section className="overflow-hidden bg-background text-foreground">
       <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <div className="flex flex-col items-center gap-4 text-center">
-          <span className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-zinc-500">
-            <span className="h-px w-6 bg-zinc-600" aria-hidden />
+          <span className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+            <span className="h-px w-6 bg-accent" aria-hidden />
             What we do
           </span>
           <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
             Five capabilities, one delivery team
           </h2>
-          <p className="max-w-xl text-pretty text-sm text-zinc-400 sm:text-base">
+          <p className="max-w-xl text-pretty text-sm text-muted-foreground sm:text-base">
             Pick a card to see what each engagement covers.
           </p>
         </div>
@@ -93,9 +93,9 @@ export function ServiceCarousel() {
                 tabIndex={isActive ? 0 : -1}
                 onClick={() => setActive(index)}
                 className={cn(
-                  "absolute left-1/2 top-0 h-[280px] w-[150px] origin-bottom overflow-hidden rounded-[22px] border border-white/10 outline-none sm:h-[440px] sm:w-[224px] sm:rounded-[26px]",
-                  "focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950",
-                  !isActive && "brightness-[0.62] saturate-[0.85]",
+                  "absolute left-1/2 top-0 h-[280px] w-[150px] origin-bottom overflow-hidden rounded-[22px] border border-border outline-none sm:h-[440px] sm:w-[224px] sm:rounded-[26px]",
+                  "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                  !isActive && "brightness-[0.7] saturate-[0.9]",
                 )}
                 style={{ zIndex: 20 - Math.abs(offset) }}
                 animate={{ x: `calc(-50% + ${x}px)`, y, rotate, scale }}
@@ -141,7 +141,7 @@ export function ServiceCarousel() {
             onClick={() => go(active - 1)}
             disabled={active === 0}
             aria-label="Previous service"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white outline-none transition-colors hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/70 disabled:opacity-30"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground outline-none transition-colors hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30"
           >
             <ChevronLeft className="size-4" aria-hidden />
           </button>
@@ -156,7 +156,9 @@ export function ServiceCarousel() {
                 aria-current={index === active}
                 className={cn(
                   "h-1.5 rounded-full transition-all",
-                  index === active ? "w-6 bg-white" : "w-1.5 bg-white/30 hover:bg-white/50",
+                  index === active
+                    ? "w-6 bg-foreground"
+                    : "w-1.5 bg-foreground/20 hover:bg-foreground/40",
                 )}
               />
             ))}
@@ -167,7 +169,7 @@ export function ServiceCarousel() {
             onClick={() => go(active + 1)}
             disabled={active === SERVICES.length - 1}
             aria-label="Next service"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white outline-none transition-colors hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/70 disabled:opacity-30"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground outline-none transition-colors hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30"
           >
             <ChevronRight className="size-4" aria-hidden />
           </button>
@@ -187,24 +189,24 @@ export function ServiceCarousel() {
               animate={{ opacity: 1, y: 0 }}
               exit={prefersReduced ? { opacity: 0 } : { opacity: 0, y: -12 }}
               transition={{ duration: 0.3 }}
-              className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 sm:p-8"
+              className="rounded-2xl border border-border bg-card p-6 sm:p-8"
             >
               <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-md bg-white/10">
-                  <ServiceIcon slug={activeService.slug} className="size-5 text-white" />
+                <span className="flex h-10 w-10 items-center justify-center rounded-md bg-secondary">
+                  <ServiceIcon slug={activeService.slug} className="size-5 text-foreground" />
                 </span>
-                <h3 className="text-lg font-semibold text-white">{activeService.title}</h3>
+                <h3 className="text-lg font-semibold text-foreground">{activeService.title}</h3>
               </div>
 
-              <p className="mt-4 text-sm leading-relaxed text-zinc-400">
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
                 {activeService.description}
               </p>
 
               <ul className="mt-5 grid gap-2 sm:grid-cols-2">
                 {activeService.included.map((item) => (
-                  <li key={item} className="flex items-start gap-2.5 text-sm text-zinc-300">
+                  <li key={item} className="flex items-start gap-2.5 text-sm text-foreground">
                     <span
-                      className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-zinc-500"
+                      className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
                       aria-hidden
                     />
                     {item}
@@ -214,7 +216,7 @@ export function ServiceCarousel() {
 
               <Link
                 href={`/services#${activeService.slug}`}
-                className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-white underline-offset-4 hover:underline"
+                className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-foreground underline-offset-4 hover:underline"
               >
                 Full details
                 <span aria-hidden>&rarr;</span>
