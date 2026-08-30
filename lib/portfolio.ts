@@ -50,6 +50,18 @@ export const PROJECTS: readonly Project[] = [
     image: "/work/al-quran-academy.jpg",
     featured: true,
   },
+  {
+    slug: "faisal-hayat-traders",
+    name: "Faisal Hayat Traders",
+    category: "web-development",
+    client: "Faisal Hayat Traders",
+    summary:
+      "Marketing and catalog site for a Rawalpindi tyre and alloy-wheel shop — a rim-size matcher tool, five brands in one catalog, and WhatsApp enquiry as the checkout.",
+    url: "https://faisal-hayat-traders.vercel.app/",
+    tags: ["Next.js", "Catalog", "Automotive"],
+    image: "/work/faisal-hayat-traders.jpg",
+    featured: true,
+  },
 ] as const;
 
 /** Category display order on the /work page. */
