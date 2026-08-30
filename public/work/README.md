@@ -8,6 +8,7 @@ in `lib/portfolio.ts`.
 | `dynamic-enterprises.jpg` | Dynamic Enterprises | Web Development |
 | `al-quran-academy.jpg` | Al Quran Academy | Web Development |
 | `faisal-hayat-traders.jpg` | Faisal Hayat Traders | Web Development |
+| `smartride-nemt.jpg` | SmartRide NEMT (in progress) | App Development |
 
 - Landscape **16:10**, at least `1600 x 1000`. `.jpg` or `.webp`.
 - Show the real site — a clean above-the-fold capture works best.
@@ -22,3 +23,7 @@ slugs: `web-development`, `app-development`, `ai-automations`, `chatbots`,
 `ai-ml`. The `/work` page groups projects into a section per category
 automatically (empty categories are skipped). Set `featured: true` to also show
 a project in the homepage "Our Work" section.
+
+Set `status: "in-progress"` for unreleased work — the card drops the Visit-site
+link, shows an "In progress" badge, and reads "In development — launching soon".
+Omit `url` for these.

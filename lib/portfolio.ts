@@ -1,11 +1,15 @@
 import type { ServiceSlug } from "@/lib/services";
 import { getService } from "@/lib/services";
 
+export type ProjectStatus = "live" | "in-progress";
+
 export interface Project {
   slug: string;
   name: string;
   /** Which line of work this project belongs to — drives grouping on /work. */
   category: ServiceSlug;
+  /** "live" (default) shows a Visit-site link; "in-progress" shows a badge instead. */
+  status?: ProjectStatus;
   /** Client or brand the site was built for. Omit for internal / self-initiated work. */
   client?: string;
   /** One or two sentences shown on the card. */
@@ -60,6 +64,17 @@ export const PROJECTS: readonly Project[] = [
     url: "https://faisal-hayat-traders.vercel.app/",
     tags: ["Next.js", "Catalog", "Automotive"],
     image: "/work/faisal-hayat-traders.jpg",
+    featured: true,
+  },
+  {
+    slug: "smartride-nemt",
+    name: "SmartRide NEMT",
+    category: "app-development",
+    status: "in-progress",
+    summary:
+      "Non-emergency medical transportation platform — patients and care facilities book rides, dispatch assigns drivers, and a driver app handles navigation, trip status, and proof of pickup. In active development.",
+    tags: ["React Native", "NEMT", "Dispatch"],
+    image: "/work/smartride-nemt.jpg",
     featured: true,
   },
 ] as const;

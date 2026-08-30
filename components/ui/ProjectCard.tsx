@@ -11,6 +11,7 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, showCategory = true, className }: ProjectCardProps) {
+  const isInProgress = project.status === "in-progress";
   const lead = showCategory ? getCategoryLabel(project.category) : project.client;
   const meta = [lead, project.year].filter(Boolean).join(" · ");
 
@@ -29,6 +30,12 @@ export function ProjectCard({ project, showCategory = true, className }: Project
       />
 
       <div className="relative -mx-6 -mt-6 mb-1 h-44 overflow-hidden">
+        {isInProgress ? (
+          <span className="absolute left-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-2.5 py-1 font-mono text-[0.65rem] font-medium uppercase tracking-[0.14em] text-foreground backdrop-blur">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
+            In progress
+          </span>
+        ) : null}
         <ServiceImage
           src={project.image}
           alt=""
@@ -70,6 +77,10 @@ export function ProjectCard({ project, showCategory = true, className }: Project
           <span className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden>
             &rarr;
           </span>
+        </span>
+      ) : isInProgress ? (
+        <span className="mt-auto pt-2 text-sm font-medium text-muted-foreground">
+          In development — launching soon
         </span>
       ) : null}
     </article>
