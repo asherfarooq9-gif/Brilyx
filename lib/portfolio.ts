@@ -27,79 +27,16 @@ export interface Project {
 
 export const PROJECTS: readonly Project[] = [
   {
-    slug: "example-storefront",
-    name: "Example Storefront",
+    slug: "dynamic-enterprises",
+    name: "Dynamic Enterprises",
     category: "web-development",
-    client: "Placeholder Co.",
+    client: "Dynamic Enterprises",
     summary:
-      "Headless e-commerce storefront with a custom checkout, built for fast page loads and easy catalog updates.",
-    url: "https://example.com",
-    tags: ["Next.js", "E-commerce", "Stripe"],
-    image: "/work/example-storefront.jpg",
-    year: 2025,
+      "Marketing and portfolio site for a Karachi design-and-production studio spanning interior design, FF&E supply, corporate film, and uniforms — a portfolio-led structure that presents all four disciplines as one team.",
+    url: "https://www.dynamicenterprises.pk/",
+    tags: ["Next.js", "Marketing site", "Portfolio"],
+    image: "/work/dynamic-enterprises.jpg",
     featured: true,
-  },
-  {
-    slug: "example-marketing-site",
-    name: "Example Marketing Site",
-    category: "web-development",
-    client: "Placeholder Studio",
-    summary:
-      "Marketing site with a CMS-backed blog, scroll-driven animation, and a 100 Lighthouse performance score.",
-    url: "https://example.com",
-    tags: ["Next.js", "CMS", "Marketing"],
-    image: "/work/example-marketing-site.jpg",
-    year: 2024,
-  },
-  {
-    slug: "example-delivery-app",
-    name: "Example Delivery App",
-    category: "app-development",
-    client: "Placeholder Logistics",
-    summary:
-      "Cross-platform iOS and Android app for drivers — offline-first routing, proof of delivery, and live dispatch.",
-    url: "https://example.com",
-    tags: ["React Native", "Offline-first", "Maps"],
-    image: "/work/example-delivery-app.jpg",
-    year: 2025,
-    featured: true,
-  },
-  {
-    slug: "example-ops-automation",
-    name: "Example Ops Automation",
-    category: "ai-automations",
-    client: "Placeholder Labs",
-    summary:
-      "Document intake pipeline that classifies, extracts, and routes invoices with human review on low-confidence cases.",
-    url: "https://example.com",
-    tags: ["Workflow", "OCR", "Human-in-the-loop"],
-    image: "/work/example-ops-automation.jpg",
-    year: 2025,
-  },
-  {
-    slug: "example-support-assistant",
-    name: "Example Support Assistant",
-    category: "chatbots",
-    client: "Placeholder SaaS",
-    summary:
-      "Support chatbot grounded in the client's help centre — answers on web and WhatsApp, escalates to a human on request.",
-    url: "https://example.com",
-    tags: ["RAG", "WhatsApp", "Escalation"],
-    image: "/work/example-support-assistant.jpg",
-    year: 2025,
-    featured: true,
-  },
-  {
-    slug: "example-forecasting-model",
-    name: "Example Forecasting Model",
-    category: "ai-ml",
-    client: "Placeholder Retail",
-    summary:
-      "Demand forecasting model with a retraining pipeline and drift monitoring, served behind an internal API.",
-    url: "https://example.com",
-    tags: ["Forecasting", "MLOps", "Monitoring"],
-    image: "/work/example-forecasting-model.jpg",
-    year: 2024,
   },
 ] as const;
 

@@ -1,16 +1,11 @@
 # Portfolio screenshots
 
-Drop one screenshot per project here. Filenames must match the project `slug`
-in `lib/portfolio.ts`:
+Drop one screenshot per project here. Filename must match the project `slug`
+in `lib/portfolio.ts`.
 
 | File | Project | Category |
 | --- | --- | --- |
-| `example-storefront.jpg` | Example Storefront | Web Development |
-| `example-marketing-site.jpg` | Example Marketing Site | Web Development |
-| `example-delivery-app.jpg` | Example Delivery App | App Development |
-| `example-ops-automation.jpg` | Example Ops Automation | AI Automations |
-| `example-support-assistant.jpg` | Example Support Assistant | Chatbots |
-| `example-forecasting-model.jpg` | Example Forecasting Model | AI / ML |
+| `dynamic-enterprises.jpg` | Dynamic Enterprises | Web Development |
 
 - Landscape **16:10**, at least `1600 x 1000`. `.jpg` or `.webp`.
 - Show the real site — a clean above-the-fold capture works best.
