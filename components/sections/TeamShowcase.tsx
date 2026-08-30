@@ -131,7 +131,7 @@ export function TeamShowcase() {
                 >
                   <span
                     className={cn(
-                      "absolute -top-3 left-2 z-10 flex items-center gap-1.5 rounded-full bg-background/90 px-1.5 py-0.5 text-xs font-medium backdrop-blur transition-colors",
+                      "absolute -top-3 left-2 z-10 flex items-center gap-1.5 rounded-full bg-background px-1.5 py-0.5 text-xs font-medium shadow-sm transition-colors",
                       isActive ? "text-foreground" : "text-muted-foreground",
                     )}
                   >

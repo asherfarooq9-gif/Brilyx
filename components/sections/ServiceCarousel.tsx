@@ -110,7 +110,7 @@ export function ServiceCarousel() {
                 className={cn(
                   "absolute left-1/2 top-0 h-[320px] w-[178px] origin-bottom overflow-hidden rounded-[22px] border border-border outline-none sm:h-[500px] sm:w-[264px] sm:rounded-[28px]",
                   "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                  !isActive && "brightness-[0.7] saturate-[0.9]",
+                  !isActive && "opacity-55",
                 )}
                 style={{ zIndex: 20 - Math.abs(offset) }}
                 animate={{ x: `calc(-50% + ${x}px)`, y, rotate, scale }}

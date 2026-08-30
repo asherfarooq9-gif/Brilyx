@@ -1,42 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import { motion, useInView, useReducedMotion } from "framer-motion";
-import { Rotate3d } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import { SITE } from "@/lib/site";
 import { Button } from "@/components/ui/Button";
 import { GradientText } from "@/components/ui/GradientText";
 import { Card } from "@/components/ui/card";
-import { Spotlight } from "@/components/ui/spotlight";
-import { SplineScene } from "@/components/ui/splite";
-
-const SPLINE_SCENE = "https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode";
-const ROBOT_POSTER = "/robot.png";
 
 export function Hero() {
   const prefersReduced = useReducedMotion();
-  const sceneRef = useRef<HTMLDivElement>(null);
-  // Only run the WebGL scene while the hero is on screen — unmounting it when
-  // scrolled away frees the GPU context and stops its render loop.
-  const sceneInView = useInView(sceneRef, { margin: "300px 0px" });
-  // The live WebGL scene is opt-in — a static poster shows by default so the page
-  // carries zero 3D cost on load. Clicking "View in 3D" mounts SplineScene, which
-  // then idle-loads the CDN viewer and unmounts again when scrolled off screen.
-  const [load3D, setLoad3D] = useState(false);
-  const [posterFailed, setPosterFailed] = useState(false);
-  // On a coarse pointer the loaded scene is display-only (pointer-events:none) so a
-  // touch-drag can't trap page scroll — see SplineScene.
-  const [isFinePointer, setIsFinePointer] = useState(false);
   const words = SITE.tagline.split(" ");
-
-  useEffect(() => {
-    const mq = window.matchMedia("(pointer: fine)");
-    const sync = () => setIsFinePointer(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
 
   const entrance = (delay: number) =>
     prefersReduced
@@ -47,16 +19,10 @@ export function Hero() {
           transition: { duration: 0.5, delay },
         };
 
-  const showScene = load3D && sceneInView && !prefersReduced;
-
   return (
     <section className="mx-auto max-w-6xl px-4 pt-10 pb-16 sm:px-6 sm:pt-14 sm:pb-20 lg:px-8">
       <Card className="relative w-full overflow-hidden rounded-2xl border-zinc-800 bg-zinc-950 shadow-[0_30px_80px_-40px_rgba(10,10,10,0.55)]">
-        {!prefersReduced && (
-          <Spotlight className="-top-40 left-0 md:-top-24 md:left-1/3" size={320} />
-        )}
-
-        <div className="flex flex-col md:min-h-[560px] md:flex-row">
+        <div className="flex flex-col md:min-h-[520px] md:flex-row">
           {/* Left: name + tagline */}
           <div className="relative z-10 flex flex-1 flex-col justify-center gap-5 p-6 sm:gap-6 sm:p-12">
             <motion.span
@@ -106,56 +72,23 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Right: robot — static poster by default, live 3D on request */}
-          <div
-            ref={sceneRef}
-            className="relative h-[260px] w-full sm:h-[380px] md:h-auto md:min-h-[380px] md:flex-1"
-          >
+          {/* Right: static brand visual (no JS / WebGL) */}
+          <div className="relative h-[220px] w-full overflow-hidden border-t border-zinc-800 sm:h-[320px] md:h-auto md:min-h-[520px] md:flex-1 md:border-l md:border-t-0">
+            <div className="absolute inset-0 dot-grid opacity-[0.14]" aria-hidden />
             <div
-              className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_60%_45%,rgba(161,161,170,0.16),transparent_60%)]"
-              aria-hidden={!posterFailed}
-            >
-              {posterFailed ? (
-                <span className="text-5xl opacity-40 sm:text-6xl">🤖</span>
-              ) : null}
+              className="absolute inset-0 bg-[radial-gradient(circle_at_62%_42%,rgba(161,161,170,0.22),transparent_62%)]"
+              aria-hidden
+            />
+            <div className="absolute inset-0 flex items-center justify-center" aria-hidden>
+              <div className="relative flex h-40 w-40 items-center justify-center sm:h-56 sm:w-56">
+                <span className="absolute inset-0 rounded-[36%] border border-white/10" />
+                <span className="absolute inset-4 rounded-[36%] border border-white/10" />
+                <span className="absolute inset-8 rounded-[36%] border border-white/[0.07]" />
+                <span className="brand-text-gradient font-mono text-2xl font-semibold tracking-tight sm:text-3xl">
+                  AI
+                </span>
+              </div>
             </div>
-
-            {!showScene && !posterFailed ? (
-              <Image
-                src={ROBOT_POSTER}
-                alt="Brilyx — engineering intelligence"
-                fill
-                sizes="(max-width: 768px) 100vw, 640px"
-                className="object-contain"
-                onError={() => setPosterFailed(true)}
-              />
-            ) : null}
-
-            {!load3D && !prefersReduced ? (
-              <button
-                type="button"
-                onClick={() => setLoad3D(true)}
-                className="absolute bottom-4 left-1/2 z-10 inline-flex h-9 -translate-x-1/2 items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 text-xs font-medium text-white outline-none transition-colors hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/70"
-              >
-                <Rotate3d className="size-4" aria-hidden />
-                View in 3D
-              </button>
-            ) : null}
-
-            {showScene ? (
-              <>
-                <SplineScene
-                  scene={SPLINE_SCENE}
-                  interactive={isFinePointer}
-                  className="absolute inset-0 h-full w-full"
-                />
-                {/* Mask the "Built with Spline" badge corner. */}
-                <span
-                  className="pointer-events-none absolute bottom-0 right-0 z-10 h-12 w-40 bg-zinc-950"
-                  aria-hidden
-                />
-              </>
-            ) : null}
           </div>
         </div>
       </Card>
