@@ -6,6 +6,7 @@ in `lib/portfolio.ts`.
 | File | Project | Category |
 | --- | --- | --- |
 | `dynamic-enterprises.jpg` | Dynamic Enterprises | Web Development |
+| `al-quran-academy.jpg` | Al Quran Academy | Web Development |
 
 - Landscape **16:10**, at least `1600 x 1000`. `.jpg` or `.webp`.
 - Show the real site — a clean above-the-fold capture works best.

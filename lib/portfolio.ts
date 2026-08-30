@@ -38,6 +38,18 @@ export const PROJECTS: readonly Project[] = [
     image: "/work/dynamic-enterprises.jpg",
     featured: true,
   },
+  {
+    slug: "al-quran-academy",
+    name: "Al Quran Academy",
+    category: "web-development",
+    client: "Al Quran Academy",
+    summary:
+      "Marketing and booking site for an online Quran academy — trial sign-ups, class scheduling across timezones, and WhatsApp enrolment for a global student base.",
+    url: "https://www.alquranacademy.click/",
+    tags: ["Next.js", "Marketing site", "Booking"],
+    image: "/work/al-quran-academy.jpg",
+    featured: true,
+  },
 ] as const;
 
 /** Category display order on the /work page. */
