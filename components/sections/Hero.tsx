@@ -1,14 +1,32 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { SITE } from "@/lib/site";
 import { Button } from "@/components/ui/Button";
 import { GradientText } from "@/components/ui/GradientText";
 import { Card } from "@/components/ui/card";
+import { SplineScene } from "@/components/ui/splite";
+
+const SPLINE_SCENE = "https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode";
 
 export function Hero() {
   const prefersReduced = useReducedMotion();
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const sceneInView = useInView(sceneRef, { margin: "200px 0px" });
+  // Live WebGL only on a real desktop (fine pointer, wide viewport). Phones and
+  // small laptops keep the zero-cost CSS visual — that was the worst lag case.
+  // Even on desktop the scene mounts only while on screen and unmounts on scroll.
+  const [canRun3D, setCanRun3D] = useState(false);
   const words = SITE.tagline.split(" ");
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px) and (pointer: fine)");
+    const sync = () => setCanRun3D(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   const entrance = (delay: number) =>
     prefersReduced
@@ -18,6 +36,8 @@ export function Hero() {
           animate: { opacity: 1, y: 0 },
           transition: { duration: 0.5, delay },
         };
+
+  const showScene = canRun3D && sceneInView && !prefersReduced;
 
   return (
     <section className="mx-auto max-w-6xl px-4 pt-10 pb-16 sm:px-6 sm:pt-14 sm:pb-20 lg:px-8">
@@ -72,8 +92,11 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Right: static brand visual (no JS / WebGL) */}
-          <div className="relative h-[220px] w-full overflow-hidden border-t border-zinc-800 sm:h-[320px] md:h-auto md:min-h-[520px] md:flex-1 md:border-l md:border-t-0">
+          {/* Right: 3D robot on desktop, CSS visual everywhere else */}
+          <div
+            ref={sceneRef}
+            className="relative h-[220px] w-full overflow-hidden border-t border-zinc-800 sm:h-[320px] md:h-auto md:min-h-[520px] md:flex-1 md:border-l md:border-t-0"
+          >
             <div className="absolute inset-0 dot-grid opacity-[0.14]" aria-hidden />
             <div
               className="absolute inset-0 bg-[radial-gradient(circle_at_62%_42%,rgba(161,161,170,0.22),transparent_62%)]"
@@ -89,6 +112,20 @@ export function Hero() {
                 </span>
               </div>
             </div>
+
+            {showScene ? (
+              <>
+                <SplineScene
+                  scene={SPLINE_SCENE}
+                  className="absolute inset-0 h-full w-full"
+                />
+                {/* Mask the "Built with Spline" badge corner. */}
+                <span
+                  className="pointer-events-none absolute bottom-0 right-0 z-10 h-12 w-40 bg-zinc-950"
+                  aria-hidden
+                />
+              </>
+            ) : null}
           </div>
         </div>
       </Card>
