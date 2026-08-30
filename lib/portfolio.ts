@@ -72,8 +72,8 @@ export const PROJECTS: readonly Project[] = [
     category: "app-development",
     status: "in-progress",
     summary:
-      "Non-emergency medical transportation platform — patients and care facilities book rides, dispatch assigns drivers, and a driver app handles navigation, trip status, and proof of pickup. In active development.",
-    tags: ["React Native", "NEMT", "Dispatch"],
+      "Non-emergency medical transportation platform — a Flutter app for patients, facilities, and drivers on a FastAPI backend. ML in the loop: a distilled BERT model classifies and triages trip requests, and XGBoost predicts ETAs and no-show risk for dispatch. In active development.",
+    tags: ["Flutter", "FastAPI", "DistilBERT", "XGBoost"],
     image: "/work/smartride-nemt.jpg",
     featured: true,
   },
