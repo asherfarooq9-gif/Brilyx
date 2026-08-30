@@ -1,14 +1,18 @@
 import type { Project } from "@/lib/portfolio";
+import { getCategoryLabel } from "@/lib/portfolio";
 import { ServiceImage } from "@/components/ui/ServiceImage";
 import { cn } from "@/lib/cn";
 
 interface ProjectCardProps {
   project: Project;
+  /** Show the category label above the name. Off when the grid is already grouped by category. */
+  showCategory?: boolean;
   className?: string;
 }
 
-export function ProjectCard({ project, className }: ProjectCardProps) {
-  const meta = [project.client, project.year].filter(Boolean).join(" · ");
+export function ProjectCard({ project, showCategory = true, className }: ProjectCardProps) {
+  const lead = showCategory ? getCategoryLabel(project.category) : project.client;
+  const meta = [lead, project.year].filter(Boolean).join(" · ");
 
   const body = (
     <article
