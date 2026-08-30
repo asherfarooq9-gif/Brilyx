@@ -1,32 +1,24 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { SITE } from "@/lib/site";
 import { Button } from "@/components/ui/Button";
 import { GradientText } from "@/components/ui/GradientText";
 import { Card } from "@/components/ui/card";
-import { SplineScene } from "@/components/ui/splite";
+import { ModelViewer } from "@/components/ui/model-viewer";
 
-const SPLINE_SCENE = "https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode";
+const ROBOT_MODEL = "/robot.glb";
+const ROBOT_POSTER = "/robot.png";
 
 export function Hero() {
   const prefersReduced = useReducedMotion();
   const sceneRef = useRef<HTMLDivElement>(null);
+  // Mount the model only when the hero is near the viewport; <model-viewer> then
+  // idle-loads its (small) CDN script and the .glb. Runs on mobile too — it is far
+  // lighter than a full WebGL runtime and reveals on interaction.
   const sceneInView = useInView(sceneRef, { margin: "200px 0px" });
-  // Live WebGL only on a real desktop (fine pointer, wide viewport). Phones and
-  // small laptops keep the zero-cost CSS visual — that was the worst lag case.
-  // Even on desktop the scene mounts only while on screen and unmounts on scroll.
-  const [canRun3D, setCanRun3D] = useState(false);
   const words = SITE.tagline.split(" ");
-
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px) and (pointer: fine)");
-    const sync = () => setCanRun3D(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
 
   const entrance = (delay: number) =>
     prefersReduced
@@ -37,7 +29,7 @@ export function Hero() {
           transition: { duration: 0.5, delay },
         };
 
-  const showScene = canRun3D && sceneInView && !prefersReduced;
+  const showScene = sceneInView && !prefersReduced;
 
   return (
     <section className="mx-auto max-w-6xl px-4 pt-10 pb-16 sm:px-6 sm:pt-14 sm:pb-20 lg:px-8">
@@ -114,17 +106,11 @@ export function Hero() {
             </div>
 
             {showScene ? (
-              <>
-                <SplineScene
-                  scene={SPLINE_SCENE}
-                  className="absolute inset-0 h-full w-full"
-                />
-                {/* Mask the "Built with Spline" badge corner. */}
-                <span
-                  className="pointer-events-none absolute bottom-0 right-0 z-10 h-12 w-40 bg-zinc-950"
-                  aria-hidden
-                />
-              </>
+              <ModelViewer
+                src={ROBOT_MODEL}
+                poster={ROBOT_POSTER}
+                className="absolute inset-0 h-full w-full"
+              />
             ) : null}
           </div>
         </div>
