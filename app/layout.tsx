@@ -4,6 +4,7 @@ import "./globals.css";
 import { SITE } from "@/lib/site";
 import { NotchNavbar } from "@/components/layout/NotchNavbar";
 import { Footer } from "@/components/layout/Footer";
+import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -69,7 +70,14 @@ const organizationJsonLd = {
   url: SITE.url,
   description: SITE.description,
   email: SITE.email,
+  telephone: SITE.phoneE164,
   slogan: SITE.tagline,
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: SITE.phoneE164,
+    email: SITE.email,
+    contactType: "customer support",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -94,6 +102,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <Footer />
+        <WhatsAppButton />
       </body>
     </html>
   );

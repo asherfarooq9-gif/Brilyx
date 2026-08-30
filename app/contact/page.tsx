@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
-import { SITE, SOCIAL_LINKS } from "@/lib/site";
+import { SITE, SOCIAL_LINKS, whatsappUrl } from "@/lib/site";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { GradientText } from "@/components/ui/GradientText";
 import { Reveal } from "@/components/motion/Reveal";
@@ -44,6 +44,26 @@ export default function ContactPage() {
               className="text-lg font-medium text-foreground underline-offset-4 hover:underline"
             >
               {SITE.email}
+            </a>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <span className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
+              Phone &amp; WhatsApp
+            </span>
+            <a
+              href={whatsappUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-lg font-medium text-foreground underline-offset-4 hover:underline"
+            >
+              {SITE.phone}
+            </a>
+            <a
+              href={`tel:${SITE.phoneE164}`}
+              className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+            >
+              Call {SITE.phoneE164}
             </a>
           </div>
 

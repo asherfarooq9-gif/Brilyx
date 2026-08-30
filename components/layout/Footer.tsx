@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { NAV_LINKS, SITE, SOCIAL_LINKS } from "@/lib/site";
+import { NAV_LINKS, SITE, SOCIAL_LINKS, whatsappUrl } from "@/lib/site";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -22,6 +22,14 @@ export function Footer() {
             className="text-sm font-medium text-foreground underline-offset-4 hover:underline"
           >
             {SITE.email}
+          </a>
+          <a
+            href={whatsappUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+          >
+            WhatsApp {SITE.phone}
           </a>
         </div>
 
