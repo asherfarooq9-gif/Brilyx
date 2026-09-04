@@ -9,9 +9,9 @@ import { TEAM } from "@/lib/team";
 import { TeamAvatar } from "@/components/ui/TeamAvatar";
 
 export const metadata: Metadata = buildMetadata({
-  title: "About",
+  title: "About Brilyx — Our Engineering Studio & Team",
   description:
-    "Brilyx is an engineering studio pairing machine learning engineers with product builders to ship production systems.",
+    "Brilyx pairs machine learning engineers with product builders to ship production systems — not demos. Meet the team and how we work.",
   path: "/about",
 });
 

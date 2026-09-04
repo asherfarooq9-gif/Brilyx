@@ -2,8 +2,8 @@ export const SITE = {
   name: "Brilyx",
   tagline: "Engineering Intelligence. Building Tomorrow.",
   description:
-    "Brilyx is an engineering studio building AI/ML systems, applications, web platforms, automations, and chatbots for teams that want to ship faster.",
-  url: "https://brilyx.com",
+    "Brilyx is an engineering studio building AI/ML systems, apps, web platforms, automations, and chatbots — shipped to production, not left as prototypes.",
+  url: "https://www.brilyx.com",
   email: "brilyx.0@gmail.com",
   /** Local display format. */
   phone: "0339 5224149",

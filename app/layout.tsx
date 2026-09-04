@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { SITE } from "@/lib/site";
+import { SITE, SOCIAL_LINKS } from "@/lib/site";
 import { NotchNavbar } from "@/components/layout/NotchNavbar";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
+import { JsonLd } from "@/components/JsonLd";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -68,10 +69,12 @@ const organizationJsonLd = {
   "@type": "Organization",
   name: SITE.name,
   url: SITE.url,
+  logo: `${SITE.url}/favicon.ico`,
   description: SITE.description,
   email: SITE.email,
   telephone: SITE.phoneE164,
   slogan: SITE.tagline,
+  sameAs: SOCIAL_LINKS.map((link) => link.href),
   contactPoint: {
     "@type": "ContactPoint",
     telephone: SITE.phoneE164,
@@ -87,10 +90,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-        />
+        <JsonLd data={organizationJsonLd} />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"

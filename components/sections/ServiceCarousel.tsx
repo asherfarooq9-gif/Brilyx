@@ -118,7 +118,7 @@ export function ServiceCarousel() {
               >
                 <ServiceImage
                   src={service.image}
-                  alt=""
+                  alt={`${service.title} illustration`}
                   sizes="(max-width: 640px) 178px, 264px"
                   imageClassName="object-cover"
                   overlayClassName="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/75 to-transparent"
@@ -230,7 +230,7 @@ export function ServiceCarousel() {
               </ul>
 
               <Link
-                href={`/services#${activeService.slug}`}
+                href={`/services/${activeService.slug}`}
                 className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-foreground underline-offset-4 hover:underline"
               >
                 Full details

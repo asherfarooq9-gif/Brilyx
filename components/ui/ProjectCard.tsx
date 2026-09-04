@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Project } from "@/lib/portfolio";
 import { getCategoryLabel } from "@/lib/portfolio";
 import { ServiceImage } from "@/components/ui/ServiceImage";
@@ -38,7 +39,7 @@ export function ProjectCard({ project, showCategory = true, className }: Project
         ) : null}
         <ServiceImage
           src={project.image}
-          alt=""
+          alt={`Screenshot of the ${project.name} website`}
           sizes="(max-width: 768px) 100vw, 460px"
           imageClassName="object-cover transition-transform duration-500 group-hover:scale-105"
           overlayClassName="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent"
@@ -71,33 +72,24 @@ export function ProjectCard({ project, showCategory = true, className }: Project
         </ul>
       ) : null}
 
-      {project.url ? (
+      {isInProgress ? (
+        <span className="mt-auto pt-2 text-sm font-medium text-muted-foreground">
+          In development — launching soon
+        </span>
+      ) : (
         <span className="mt-auto inline-flex items-center gap-1 pt-2 text-sm font-medium text-foreground">
-          Visit site
+          View case study
           <span className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden>
             &rarr;
           </span>
         </span>
-      ) : isInProgress ? (
-        <span className="mt-auto pt-2 text-sm font-medium text-muted-foreground">
-          In development — launching soon
-        </span>
-      ) : null}
+      )}
     </article>
   );
 
-  if (project.url) {
-    return (
-      <a
-        href={project.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`${project.name} — opens the live site in a new tab`}
-        className="block h-full rounded-xl focus-visible:outline-none"
-      >
-        {body}
-      </a>
-    );
-  }
-  return body;
+  return (
+    <Link href={`/work/${project.slug}`} className="block h-full rounded-xl focus-visible:outline-none">
+      {body}
+    </Link>
+  );
 }

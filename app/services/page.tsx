@@ -9,9 +9,9 @@ import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { CtaBanner } from "@/components/sections/CtaBanner";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Services",
+  title: "AI, Web & App Development Services",
   description:
-    "AI/ML development, app development, web development, AI automations, and chatbots — delivered to production by the Brilyx team.",
+    "AI/ML development, app development, web development, AI automations, and chatbots — five disciplines, one delivery team, fixed-scope engagements.",
   path: "/services",
 });
 
@@ -36,8 +36,8 @@ export default function ServicesPage() {
       <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6 lg:px-8">
         <Stagger className="grid gap-5 md:grid-cols-2">
           {SERVICES.map((service) => (
-            <StaggerItem key={service.slug} id={service.slug} className="h-full scroll-mt-24">
-              <ServiceCard service={service} detailed />
+            <StaggerItem key={service.slug} className="h-full">
+              <ServiceCard service={service} href={`/services/${service.slug}`} />
             </StaggerItem>
           ))}
         </Stagger>

@@ -30,7 +30,7 @@ export function ServiceCard({ service, href, detailed = false, className }: Serv
         <div className="relative -mx-6 -mt-6 mb-1 h-40 overflow-hidden">
           <ServiceImage
             src={service.image}
-            alt=""
+            alt={`${service.title} illustration`}
             sizes="(max-width: 768px) 100vw, 460px"
             imageClassName="object-cover transition-transform duration-500 group-hover:scale-105"
             overlayClassName="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-card/10"

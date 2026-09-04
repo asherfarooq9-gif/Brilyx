@@ -9,9 +9,9 @@ import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { CtaBanner } from "@/components/sections/CtaBanner";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Our Work",
+  title: "Case Studies — Web, App & AI Projects We've Shipped",
   description:
-    "Websites, apps, AI automations, and chatbots Brilyx has designed and built — grouped by the kind of work.",
+    "Websites, apps, AI automations, and chatbots Brilyx has designed and built for real clients — grouped by discipline, with the live sites linked.",
   path: "/work",
 });
 
