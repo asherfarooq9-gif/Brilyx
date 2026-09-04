@@ -120,18 +120,11 @@ export function Hero() {
             </div>
 
             {showScene ? (
-              <>
-                <SplineScene
-                  scene={SPLINE_SCENE}
-                  interactive={isFinePointer}
-                  className="absolute inset-0 h-full w-full"
-                />
-                {/* Mask the "Built with Spline" badge corner. */}
-                <span
-                  className="pointer-events-none absolute bottom-0 right-0 z-10 h-12 w-40 bg-zinc-950"
-                  aria-hidden
-                />
-              </>
+              <SplineScene
+                scene={SPLINE_SCENE}
+                interactive={isFinePointer}
+                className="absolute inset-0 h-full w-full"
+              />
             ) : null}
           </div>
         </div>
