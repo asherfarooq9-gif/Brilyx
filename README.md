@@ -14,7 +14,7 @@ platforms, automations, and chatbots.
 - `lucide-react` icons
 - Space Grotesk (headings) + Inter (body) + JetBrains Mono (labels) via `next/font`
 - Monochrome palette — neutral grey accent, no brand colour
-- Contact form → [Formspree](https://formspree.io)
+- Contact → click-to-chat WhatsApp deep link (`whatsappUrl()` in `lib/site.ts`)
 - Hero 3D scene → Spline `<spline-viewer>` web component, loaded from the unpkg CDN
   at runtime (see `components/ui/splite.tsx`). No build-time WebGL/DRACO assets; the
   scene URL is `SPLINE_SCENE` in `components/sections/Hero.tsx`. Falls back to a static
@@ -28,15 +28,8 @@ platforms, automations, and chatbots.
 
 ```bash
 npm install
-cp .env.example .env.local   # then fill in NEXT_PUBLIC_FORMSPREE_ID
 npm run dev                  # http://localhost:3000
 ```
-
-### Environment variables
-
-| Variable | Required | Purpose |
-| --- | --- | --- |
-| `NEXT_PUBLIC_FORMSPREE_ID` | for the contact form | Formspree form ID (the segment after `/f/`). Without it, the form shows a "not connected" message and never posts. |
 
 ## Scripts
 
@@ -64,7 +57,7 @@ components/
                         adaptive-notch-navigation-bar (notch primitives)
   motion/               Reveal, Stagger (Framer Motion helpers)
   sections/             Hero (text + 3D Spline showcase card, no copy on the card),
-                        ServiceHighlights, AboutBrief, Testimonials, CtaBanner, ContactForm
+                        ServiceHighlights, AboutBrief, Testimonials, CtaBanner
 lib/
   site.ts               Name, tagline, nav links, socials
   services.ts           Single source of truth for the five services
@@ -91,5 +84,4 @@ lib/
 
 1. Push this repo to GitHub.
 2. Import it in Vercel — framework preset is detected automatically.
-3. Add `NEXT_PUBLIC_FORMSPREE_ID` under Project → Settings → Environment Variables.
-4. Set the production domain and update `SITE.url` in `lib/site.ts` to match.
+3. Set the production domain and update `SITE.url` in `lib/site.ts` to match.

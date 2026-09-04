@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/motion/Reveal";
+import { whatsappUrl } from "@/lib/site";
 
 interface CtaBannerProps {
   title?: string;
@@ -24,7 +25,7 @@ export function CtaBanner({
           {description}
         </p>
         <div className="relative mt-8 flex justify-center">
-          <Button href="/contact" size="lg" variant="secondary">
+          <Button href={whatsappUrl()} external size="lg" variant="secondary">
             Start a project
           </Button>
         </div>

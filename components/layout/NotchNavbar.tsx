@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { LayoutGroup, motion, useReducedMotion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { NAV_LINKS, SITE } from "@/lib/site";
+import { NAV_LINKS, SITE, whatsappUrl } from "@/lib/site";
 import { cn } from "@/lib/cn";
 import { NotchLeftWing, NotchRightWing } from "@/components/ui/adaptive-notch-navigation-bar";
 
@@ -29,15 +29,17 @@ function Brand() {
 
 function CtaLink({ className }: { className?: string }) {
   return (
-    <Link
-      href="/contact"
+    <a
+      href={whatsappUrl()}
+      target="_blank"
+      rel="noopener noreferrer"
       className={cn(
         "inline-flex h-8 shrink-0 items-center justify-center rounded-full bg-zinc-50 px-3.5 text-xs font-semibold text-zinc-950 outline-none transition-colors hover:bg-white focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-1 focus-visible:ring-offset-zinc-950",
         className,
       )}
     >
       Start a project
-    </Link>
+    </a>
   );
 }
 
@@ -187,12 +189,14 @@ export function NotchNavbar() {
                 );
               })}
               <li className="mt-1.5">
-                <Link
-                  href="/contact"
+                <a
+                  href={whatsappUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="block rounded-xl bg-zinc-50 px-3 py-2 text-center text-sm font-semibold text-zinc-950"
                 >
                   Start a project
-                </Link>
+                </a>
               </li>
             </ul>
           </div>

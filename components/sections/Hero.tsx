@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
-import { SITE } from "@/lib/site";
+import { SITE, whatsappUrl } from "@/lib/site";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/card";
 import { SplineScene } from "@/components/ui/splite";
@@ -85,7 +85,7 @@ export function Hero() {
               {...entrance(0.45)}
               className="flex flex-col gap-3 sm:flex-row [&>*]:w-full sm:[&>*]:w-auto"
             >
-              <Button href="/contact" size="lg" variant="secondary">
+              <Button href={whatsappUrl()} external size="lg" variant="secondary">
                 Start a project
               </Button>
               <Button
