@@ -5,6 +5,7 @@ import { SITE, SOCIAL_LINKS } from "@/lib/site";
 import { NotchNavbar } from "@/components/layout/NotchNavbar";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 import { JsonLd } from "@/components/JsonLd";
 
 const inter = Inter({
@@ -103,6 +104,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <Footer />
         <WhatsAppButton />
+        <ChatWidget />
       </body>
     </html>
   );
