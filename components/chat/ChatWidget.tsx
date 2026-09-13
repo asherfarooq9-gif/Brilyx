@@ -30,6 +30,15 @@ export function ChatWidget() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, open]);
 
+  useEffect(() => {
+    if (!open || !window.matchMedia("(max-width: 639px)").matches) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
   const handleSend = async (text: string) => {
     const nextMessages: ChatMessage[] = [...messages, { role: "user", content: text }];
     setMessages(nextMessages);
@@ -52,7 +61,23 @@ export function ChatWidget() {
   };
 
   return (
-    <div className="fixed bottom-5 left-5 z-40 sm:bottom-6 sm:left-6">
+    <>
+      <div
+        className="fixed z-40"
+        style={{
+          left: "max(1.25rem, env(safe-area-inset-left))",
+          bottom: "max(1.25rem, env(safe-area-inset-bottom))",
+        }}
+      >
+        <button
+          onClick={() => setOpen((v) => !v)}
+          aria-label={open ? "Close chat" : "Chat with us"}
+          className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-black/25 transition-transform hover:scale-[1.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
+        </button>
+      </div>
+
       <AnimatePresence>
         {open && (
           <motion.div
@@ -60,9 +85,12 @@ export function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.97 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="mb-3 flex h-[min(32rem,70vh)] w-[min(22rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xl"
+            className="fixed inset-0 z-50 flex h-[100dvh] w-full flex-col overflow-hidden bg-card sm:inset-auto sm:bottom-24 sm:left-6 sm:h-[min(32rem,70dvh)] sm:w-[min(22rem,calc(100vw-2.5rem))] sm:rounded-2xl sm:border sm:border-border sm:shadow-2xl"
           >
-            <div className="flex items-center justify-between border-b border-border px-4 py-3">
+            <div
+              className="flex items-center justify-between border-b border-border px-4 py-3 sm:pt-3"
+              style={{ paddingTop: "max(0.75rem, env(safe-area-inset-top))" }}
+            >
               <div>
                 <p className="text-sm font-semibold text-foreground">{SITE.name} Assistant</p>
                 <p className="text-xs text-muted-foreground">Usually replies in a minute</p>
@@ -70,9 +98,9 @@ export function ChatWidget() {
               <button
                 aria-label="Close chat"
                 onClick={() => setOpen(false)}
-                className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
               >
-                <X className="h-4 w-4" />
+                <X className="h-5 w-5" />
               </button>
             </div>
 
@@ -99,7 +127,10 @@ export function ChatWidget() {
               )}
             </div>
 
-            <div className="border-t border-border p-2">
+            <div
+              className="border-t border-border p-2"
+              style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
+            >
               <PromptInputBox
                 onSend={handleSend}
                 isLoading={isLoading}
@@ -110,14 +141,6 @@ export function ChatWidget() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <button
-        onClick={() => setOpen((v) => !v)}
-        aria-label={open ? "Close chat" : "Chat with us"}
-        className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-black/25 transition-transform hover:scale-[1.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-      >
-        {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
-      </button>
-    </div>
+    </>
   );
 }
