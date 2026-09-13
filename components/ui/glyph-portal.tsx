@@ -145,7 +145,7 @@ export default function GlyphPortal({
     // CSS generics (sans-serif, ui-sans-serif) that document.fonts.check() can't confirm as
     // "available" the way it can a real face, so requiring every entry to pass keeps this
     // permanently true regardless of whether the actual custom font ever loads.
-    const primaryFace = families[0];
+    const primaryFace = families[0] ?? "";
     stalled = !available.includes(primaryFace);
     // The face can still finish loading after this mount (cold cache, slow network).
     // Recheck once it does instead of freezing motion off for the rest of the session.
