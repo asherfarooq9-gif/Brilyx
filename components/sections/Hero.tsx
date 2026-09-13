@@ -1,134 +1,108 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
 import { SITE, whatsappUrl } from "@/lib/site";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/card";
-import { SplineScene } from "@/components/ui/splite";
+import GlyphPortal, { type GlyphPortalStyle } from "@/components/ui/glyph-portal";
 
-const SPLINE_SCENE = "https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode";
+const PORTAL_STYLE: GlyphPortalStyle = {
+  "--gp-paper": "var(--background)",
+  "--gp-ink": "var(--foreground)",
+  "--gp-field": "var(--foreground)",
+  "--gp-foreground": "var(--background)",
+};
 
 export function Hero() {
-  const prefersReduced = useReducedMotion();
-  const sceneRef = useRef<HTMLDivElement>(null);
-  // The scene mounts only while the hero is on screen and unmounts on scroll, so
-  // the WebGL render loop and GPU context are freed once you scroll past.
-  const sceneInView = useInView(sceneRef, { margin: "200px 0px" });
-  // On a coarse pointer (touch) the scene is display-only — pointer-events:none so
-  // a drag can't trap page scroll. Fine pointers get drag-to-rotate.
-  const [isFinePointer, setIsFinePointer] = useState(false);
-  const words = SITE.tagline.split(" ");
-
-  useEffect(() => {
-    const mq = window.matchMedia("(pointer: fine)");
-    const sync = () => setIsFinePointer(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
-
-  const entrance = (delay: number) =>
-    prefersReduced
-      ? {}
-      : {
-          initial: { opacity: 0, y: 16 },
-          animate: { opacity: 1, y: 0 },
-          transition: { duration: 0.5, delay },
-        };
-
-  const showScene = sceneInView && !prefersReduced;
-
   return (
     <section className="mx-auto max-w-6xl px-4 pt-10 pb-16 sm:px-6 sm:pt-14 sm:pb-20 lg:px-8">
-      <Card className="relative w-full overflow-hidden rounded-2xl border-zinc-800 bg-zinc-950 shadow-[0_30px_80px_-40px_rgba(10,10,10,0.55)]">
-        <div className="flex flex-col md:min-h-[520px] md:flex-row">
-          {/* Left: name + tagline */}
-          <div className="relative z-10 flex flex-1 flex-col justify-center gap-5 p-6 sm:gap-6 sm:p-12">
-            <motion.span
-              {...entrance(0)}
-              className="inline-flex w-fit items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/70 px-3 py-1.5 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-zinc-400 sm:px-4 sm:text-xs sm:tracking-[0.18em]"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-zinc-500" aria-hidden />
-              {SITE.name} · Engineering studio
-            </motion.span>
-
-            <h1 className="max-w-xl text-balance text-3xl font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl sm:leading-[1.05] lg:text-6xl">
-              <span className="sr-only">AI/ML, web &amp; app development studio — </span>
-              {words.map((word, index) => (
-                <motion.span
-                  key={`${word}-${index}`}
-                  className="mr-[0.25em] inline-block"
-                  {...entrance(0.1 + index * 0.06)}
-                >
-                  {index >= words.length - 1 ? (
-                    <span className="bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
-                      {word}
-                    </span>
-                  ) : (
-                    word
-                  )}
-                </motion.span>
-              ))}
-            </h1>
-
-            <motion.p
-              {...entrance(0.35)}
-              className="max-w-md text-pretty text-base leading-relaxed text-zinc-400 sm:text-lg"
-            >
-              We build AI/ML systems, applications, web platforms, automations, and
-              chatbots — shipped to production with the monitoring and craft to keep them
-              there.
-            </motion.p>
-
-            <motion.div
-              {...entrance(0.45)}
-              className="flex flex-col gap-3 sm:flex-row [&>*]:w-full sm:[&>*]:w-auto"
-            >
-              <Button href={whatsappUrl()} external size="lg" variant="secondary">
-                Start a project
-              </Button>
-              <Button
-                href="/services"
-                size="lg"
-                variant="outline"
-                className="border-white/25 bg-transparent text-white hover:border-white/40 hover:bg-white/10 hover:text-white"
-              >
-                Explore services
-              </Button>
-            </motion.div>
-          </div>
-
-          {/* Right: 3D robot (same on mobile and desktop, one continuous black surface with the left panel) */}
-          <div
-            ref={sceneRef}
-            className="relative h-[240px] w-full overflow-hidden sm:h-[340px] md:h-auto md:min-h-[520px] md:flex-1"
-          >
-            <div className="absolute inset-0 dot-grid opacity-[0.14]" aria-hidden />
+      <div className="relative overflow-hidden rounded-2xl border border-border shadow-[0_30px_80px_-40px_rgba(10,10,10,0.35)]">
+        <style>{`
+          [data-brilyx-portal] [data-gp-hint]{display:none;}
+          [data-brilyx-portal] [data-gp-caption]{inset:calc(var(--gp-word-bottom,55%) + 88px) 24px auto;justify-content:center;}
+          [data-brilyx-portal] [data-gp-enter]{min-height:44px;padding:0 18px;gap:14px;background:var(--secondary);border:1px solid var(--border);border-radius:9999px;color:var(--secondary-foreground);font-family:var(--font-sans);font-size:13px;font-weight:600;box-shadow:0 1px 2px rgba(10,10,10,.15);transition:transform .18s,background-color .18s;}
+          [data-brilyx-portal] [data-gp-enter]:hover{background:var(--muted);transform:translateY(-1px);}
+          [data-brilyx-portal] [data-gp-enter]:focus-visible{outline:2px solid var(--ring);outline-offset:4px;}
+          [data-brilyx-portal] [data-gp-touch-picker]{top:auto;bottom:16px;left:50%;}
+          [data-brilyx-portal] [data-gp-select]{border-color:var(--border);border-radius:8px;font-family:var(--font-sans);font-size:12px;color:var(--muted-foreground);}
+          [data-brilyx-header]{position:absolute;inset:clamp(20px,4cqw,32px) clamp(20px,4cqw,32px) auto;display:flex;align-items:center;gap:16px;}
+          [data-brilyx-badge]{display:inline-flex;align-items:center;gap:8px;border-radius:9999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);padding:6px 14px;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);}
+          [data-brilyx-eyebrow]{position:absolute;inset:auto 5% calc(100% - var(--gp-word-top,35%) + 20px);margin:0 auto;max-width:36rem;text-align:center;font-family:var(--font-display);font-weight:600;font-size:clamp(1.1rem,1vw + 1rem,1.65rem);line-height:1.2;color:rgba(255,255,255,.92);}
+          [data-brilyx-support]{position:absolute;inset:calc(var(--gp-word-bottom,55%) + 20px) 6% auto;margin:0 auto;max-width:32rem;text-align:center;font-family:var(--font-sans);font-size:15px;line-height:1.6;color:rgba(255,255,255,.6);}
+          [data-brilyx-actions]{position:absolute;inset:calc(var(--gp-word-bottom,55%) + 96px) 5% auto;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+          @container(max-height:479px){[data-brilyx-header]{top:16px;}[data-brilyx-eyebrow]{font-size:1rem;}[data-brilyx-support]{display:none;}[data-brilyx-actions]{inset:calc(var(--gp-word-bottom,55%) + 26px) 5% auto;}[data-brilyx-portal] [data-gp-caption]{inset:calc(var(--gp-word-bottom,55%) + 78px) 24px auto;}}
+          [data-brilyx-reveal]{display:flex;width:min(100%,64rem);margin:auto;flex-direction:column;align-items:flex-start;gap:clamp(1.75rem,4svh,3rem);}
+          [data-brilyx-reveal] h2{max-width:36rem;margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(1.5rem,1rem + 2vw,2.25rem);line-height:1.2;letter-spacing:-0.01em;}
+          [data-brilyx-caps]{display:grid;width:100%;grid-template-columns:1fr;gap:1.5rem;}
+          [data-brilyx-cap]{border-top:1px solid rgba(255,255,255,.16);padding-top:1rem;}
+          [data-brilyx-cap] h3{margin:0;font-family:var(--font-sans);font-size:1.0625rem;font-weight:600;}
+          [data-brilyx-cap] p{margin:.5rem 0 0;font-family:var(--font-sans);font-size:.9375rem;line-height:1.55;color:rgba(255,255,255,.65);}
+          @container(min-width:768px){[data-brilyx-caps]{grid-template-columns:repeat(3,minmax(0,1fr));gap:2.5rem;}}
+        `}</style>
+        <GlyphPortal
+          word={SITE.name.toUpperCase()}
+          fontFamily="var(--font-display)"
+          fontWeight={700}
+          scrollLength={2.2}
+          interactive
+          annotations={false}
+          enterLabel="Step inside"
+          className="brilyx-portal"
+          style={{ ...PORTAL_STYLE, containerType: "size" }}
+          background={
             <div
-              className="absolute inset-0 bg-[radial-gradient(circle_at_62%_42%,rgba(161,161,170,0.22),transparent_62%)]"
-              aria-hidden
+              className="absolute inset-0"
+              style={{
+                transform: "scale(var(--gp-field-scale,1))",
+                background:
+                  "radial-gradient(circle at 24% 18%, rgba(161,161,170,0.28), transparent 55%), radial-gradient(circle at 80% 78%, rgba(82,82,91,0.32), transparent 60%), linear-gradient(135deg, #0a0a0a 0%, #18181b 55%, #0a0a0a 100%)",
+              }}
             />
-            <div className="absolute inset-0 flex items-center justify-center" aria-hidden>
-              <div className="relative flex h-32 w-32 items-center justify-center sm:h-44 sm:w-44">
-                <span className="absolute inset-0 rounded-[36%] border border-white/10" />
-                <span className="absolute inset-4 rounded-[36%] border border-white/[0.07]" />
-                <span className="bg-gradient-to-r from-white to-zinc-400 bg-clip-text font-mono text-xl font-semibold tracking-tight text-transparent sm:text-2xl">
-                  AI
-                </span>
+          }
+          front={
+            <>
+              <div data-brilyx-header>
+                <span data-brilyx-badge>{SITE.name} · Engineering studio</span>
+              </div>
+              <h1 data-brilyx-eyebrow>{SITE.tagline}</h1>
+              <p data-brilyx-support>
+                We build AI/ML systems, applications, web platforms, automations, and
+                chatbots, shipped to production with the monitoring and craft to keep
+                them there.
+              </p>
+              <div data-brilyx-actions>
+                <Button href={whatsappUrl()} external size="lg" variant="secondary">
+                  Start a project
+                </Button>
+                <Button
+                  href="/services"
+                  size="lg"
+                  variant="outline"
+                  className="border-white/25 bg-transparent text-white hover:border-white/40 hover:bg-white/10 hover:text-white"
+                >
+                  Explore services
+                </Button>
+              </div>
+            </>
+          }
+        >
+          <div data-brilyx-reveal>
+            <h2>Everywhere your product needs intelligence, we&apos;ve already shipped it.</h2>
+            <div data-brilyx-caps>
+              <div data-brilyx-cap>
+                <h3>AI / ML systems</h3>
+                <p>Models, pipelines, and inference that hold up in production.</p>
+              </div>
+              <div data-brilyx-cap>
+                <h3>Web &amp; app development</h3>
+                <p>Fast, accessible products on Next.js, React, and native stacks.</p>
+              </div>
+              <div data-brilyx-cap>
+                <h3>Automations &amp; chatbots</h3>
+                <p>Workflows and assistants that remove repetitive work from your day.</p>
               </div>
             </div>
-
-            {showScene ? (
-              <SplineScene
-                scene={SPLINE_SCENE}
-                interactive={isFinePointer}
-                className="absolute inset-0 h-full w-full"
-              />
-            ) : null}
           </div>
-        </div>
-      </Card>
+        </GlyphPortal>
+      </div>
     </section>
   );
 }
