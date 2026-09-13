@@ -46,7 +46,7 @@ export function Hero() {
           annotations={false}
           enterLabel="Step inside"
           className="brilyx-portal"
-          style={{ ...PORTAL_STYLE, containerType: "size" }}
+          style={PORTAL_STYLE}
           background={
             <div
               className="absolute inset-0"
