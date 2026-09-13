@@ -141,18 +141,22 @@ export default function GlyphPortal({
       catch { return false; }
     });
     glyph.style.fontFamily = [...available, DEFAULT_FONT].join(",");
-    // A pending requested face may also hold WebKit's render loop. Keep that mount static.
-    stalled = available.length < families.length;
+    // Only the primary requested face matters here. Later fallback entries are often bare
+    // CSS generics (sans-serif, ui-sans-serif) that document.fonts.check() can't confirm as
+    // "available" the way it can a real face, so requiring every entry to pass keeps this
+    // permanently true regardless of whether the actual custom font ever loads.
+    const primaryFace = families[0];
+    stalled = !available.includes(primaryFace);
     // The face can still finish loading after this mount (cold cache, slow network).
     // Recheck once it does instead of freezing motion off for the rest of the session.
     if (stalled) {
       document.fonts.ready.then(() => {
-        if (disposed) return;
+        if (disposed || !stalled) return;
         const nowAvailable = families.filter((family) => {
           try { return document.fonts.check(`${weight} 100px ${family.trim()}`, text); }
           catch { return false; }
         });
-        if (nowAvailable.length <= available.length) return;
+        if (!nowAvailable.includes(primaryFace)) return;
         glyph.style.fontFamily = [...nowAvailable, DEFAULT_FONT].join(",");
         stalled = false;
         fontDirty = true;
