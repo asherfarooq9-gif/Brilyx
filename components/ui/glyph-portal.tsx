@@ -123,7 +123,6 @@ export default function GlyphPortal({
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d", { willReadFrequently: true });
     let disposed = false, raf = 0, dirty = true, active = true, ready = false;
-    const mountedAt = performance.now();
     let browserFrameSeen = false, stalled = false;
     let W = 1, H = 1, travel = 1, startScale = 1, endScale = 1;
     let center = { x: 0, y: 0 }, target: Ink | null = null;
@@ -290,7 +289,7 @@ export default function GlyphPortal({
       raf = 0;
       if (disposed) return;
       if (time !== undefined && !browserFrameSeen) {
-        browserFrameSeen = true; stalled ||= performance.now() - mountedAt > 2500; dirty = true;
+        browserFrameSeen = true; dirty = true;
       }
       if (dirty) { dirty = false; layout(); }
       if (ready) paint(position());
