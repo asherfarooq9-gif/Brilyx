@@ -81,7 +81,7 @@ function interior(context: CanvasRenderingContext2D, char: string, font: string)
 
 function scrollParent(element: HTMLElement): HTMLElement | null {
   for (let p = element.parentElement; p; p = p.parentElement) {
-    if (/(auto|scroll|hidden)/.test(getComputedStyle(p).overflowY) && p !== document.body && p !== document.documentElement) return p;
+    if (/(auto|scroll)/.test(getComputedStyle(p).overflowY) && p !== document.body && p !== document.documentElement) return p;
   }
   return null;
 }
@@ -144,6 +144,23 @@ export default function GlyphPortal({
     glyph.style.fontFamily = [...available, DEFAULT_FONT].join(",");
     // A pending requested face may also hold WebKit's render loop. Keep that mount static.
     stalled = available.length < families.length;
+    // The face can still finish loading after this mount (cold cache, slow network).
+    // Recheck once it does instead of freezing motion off for the rest of the session.
+    if (stalled) {
+      document.fonts.ready.then(() => {
+        if (disposed) return;
+        const nowAvailable = families.filter((family) => {
+          try { return document.fonts.check(`${weight} 100px ${family.trim()}`, text); }
+          catch { return false; }
+        });
+        if (nowAvailable.length <= available.length) return;
+        glyph.style.fontFamily = [...nowAvailable, DEFAULT_FONT].join(",");
+        stalled = false;
+        fontDirty = true;
+        dirty = true;
+        schedule();
+      });
+    }
 
     const readInk = () => {
       if (!context) return false;
