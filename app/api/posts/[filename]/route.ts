@@ -6,7 +6,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const imgPath = path.join(process.cwd(), "public", "post_1789337612.jpg");
+  const imgPath = path.join(process.cwd(), "public", "posts", "post_1789337499.jpg");
   if (!fs.existsSync(imgPath)) {
     return NextResponse.json({ error: "not found" }, { status: 404 });
   }
