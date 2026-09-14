@@ -20,6 +20,14 @@ const GREETING: ChatMessage = {
 
 const FALLBACK_REPLY = `Sorry, I couldn't reach the assistant right now. Message us directly on WhatsApp (${whatsappUrl()}) or at ${SITE.email} and the team will pick it up.`;
 
+const SUGGESTED_QUESTIONS = [
+  "What services does Brilyx offer?",
+  "Tell me about your AI website chatbot",
+  "What are WhatsApp AI agents?",
+  "How much does a chatbot cost?",
+  "I'd like to get a demo",
+];
+
 const CHATBOT_API_BASE = "https://brilyx-chatbot.onrender.com";
 
 export function ChatWidget() {
@@ -135,6 +143,26 @@ export function ChatWidget() {
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.3s]" />
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.15s]" />
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current" />
+                </div>
+              )}
+
+              {messages.length === 1 && !isLoading && (
+                <div className="pt-1">
+                  <p className="mb-2 text-xs font-medium uppercase tracking-wide text-white/40">
+                    Common questions
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {SUGGESTED_QUESTIONS.map((question) => (
+                      <button
+                        key={question}
+                        type="button"
+                        onClick={() => handleSend(question)}
+                        className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-left text-xs text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+                      >
+                        {question}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
