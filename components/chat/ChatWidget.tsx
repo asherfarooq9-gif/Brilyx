@@ -20,11 +20,14 @@ const GREETING: ChatMessage = {
 
 const FALLBACK_REPLY = `Sorry, I couldn't reach the assistant right now. Message us directly on WhatsApp (${whatsappUrl()}) or at ${SITE.email} and the team will pick it up.`;
 
+const CHATBOT_API_BASE = "https://brilyx-chatbot.onrender.com";
+
 export function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([GREETING]);
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const conversationIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -40,18 +43,27 @@ export function ChatWidget() {
   }, [open]);
 
   const handleSend = async (text: string) => {
-    const nextMessages: ChatMessage[] = [...messages, { role: "user", content: text }];
-    setMessages(nextMessages);
+    setMessages((prev) => [...prev, { role: "user", content: text }]);
     setIsLoading(true);
 
     try {
-      const res = await fetch("/api/chat", {
+      if (!conversationIdRef.current) {
+        const convRes = await fetch(`${CHATBOT_API_BASE}/api/conversations`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({}),
+        });
+        const conv = await convRes.json();
+        conversationIdRef.current = conv.conversation_id;
+      }
+
+      const res = await fetch(`${CHATBOT_API_BASE}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: nextMessages }),
+        body: JSON.stringify({ conversation_id: conversationIdRef.current, message: text }),
       });
       const data = await res.json();
-      const reply: string = res.ok && data.reply ? data.reply : FALLBACK_REPLY;
+      const reply: string = res.ok && data.response ? data.response : FALLBACK_REPLY;
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
     } catch {
       setMessages((prev) => [...prev, { role: "assistant", content: FALLBACK_REPLY }]);
