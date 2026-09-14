@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { MessageCircle, X } from "lucide-react";
+import { Bot, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { PromptInputBox } from "@/components/ui/ai-prompt-box";
@@ -83,18 +83,34 @@ export function ChatWidget() {
   return (
     <>
       <div
-        className="fixed z-40"
+        className="fixed z-40 flex items-end gap-2"
         style={{
           left: "max(1.25rem, env(safe-area-inset-left))",
           bottom: "max(1.25rem, env(safe-area-inset-bottom))",
         }}
       >
+        <AnimatePresence>
+          {!open && (
+            <motion.button
+              type="button"
+              onClick={() => setOpen(true)}
+              initial={{ opacity: 0, scale: 0.9, x: -8 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.9, x: -8 }}
+              transition={{ duration: 0.18 }}
+              className="mb-1 max-w-[11rem] rounded-2xl rounded-bl-sm bg-card px-3.5 py-2.5 text-left text-sm font-medium text-foreground shadow-lg shadow-black/10 ring-1 ring-border hover:bg-accent hover:text-accent-foreground"
+            >
+              Hi! 👋 How may we help you?
+            </motion.button>
+          )}
+        </AnimatePresence>
+
         <button
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Close chat" : "Chat with us"}
-          className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-black/25 transition-transform hover:scale-[1.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-black/25 transition-transform hover:scale-[1.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
-          {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
+          {open ? <X className="h-6 w-6" /> : <Bot className="h-7 w-7" />}
         </button>
       </div>
 
