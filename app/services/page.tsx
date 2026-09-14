@@ -30,7 +30,7 @@ export default function ServicesPage() {
         <Stagger className="grid gap-5 md:grid-cols-2">
           {SERVICES.map((service) => (
             <StaggerItem key={service.slug} className="h-full">
-              <ServiceCard service={service} href={`/services/${service.slug}`} />
+              <ServiceCard service={service} href={`/services/${service.slug}`} detailed />
             </StaggerItem>
           ))}
         </Stagger>
