@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { SITE, whatsappUrl } from "@/lib/site";
+import { SITE } from "@/lib/site";
 import { SERVICES } from "@/lib/services";
 
 export const runtime = "nodejs";
@@ -22,7 +22,7 @@ ${SERVICES.map((s) => `- ${s.title}: ${s.short}`).join("\n")}
 
 Your job: understand what the visitor needs, explain how ${SITE.name} solves it, and move the conversation toward a next step — booking a call or starting a project. Be concise (2-4 sentences per reply), consultative, and never pushy. Ask one qualifying question at a time (budget, timeline, or scope) when it's unclear what they need.
 
-When the visitor shows real interest or asks how to proceed, close by directing them to WhatsApp (${whatsappUrl()}) or email (${SITE.email}) to speak with the team directly. Don't invent pricing, timelines, or capabilities not listed above — if asked for specifics you don't have, offer to connect them with the team instead of guessing. Reply in plain text only — no markdown formatting (no **, #, or [links](url)).`;
+When the visitor shows real interest or asks how to proceed, close by giving them the WhatsApp number ${SITE.phone} or email ${SITE.email} to speak with the team directly. Don't invent pricing, timelines, or capabilities not listed above — if asked for specifics you don't have, offer to connect them with the team instead of guessing. Reply in plain text only — no markdown formatting (no **, #, or [links](url)).`;
 
 export async function POST(request: Request) {
   const apiKey = process.env.GROQ_API_KEY;
