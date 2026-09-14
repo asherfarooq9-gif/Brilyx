@@ -40,18 +40,12 @@ export function Hero() {
             {SITE.name} · Engineering studio
           </motion.span>
 
-          <h1 className="mb-6 max-w-4xl text-balance text-4xl font-bold leading-[1.05] tracking-tight text-transparent sm:text-6xl lg:text-7xl">
-            <span className="sr-only">{SITE.tagline}</span>
-            <span
-              aria-hidden
-              className="bg-linear-to-b from-white to-white/40 bg-clip-text text-transparent drop-shadow-2xl [-webkit-text-fill-color:transparent]"
-            >
-              {words.map((word, index) => (
-                <motion.span key={`${word}-${index}`} className="mr-[0.25em] inline-block" {...entrance(1.5 + index * 0.08)}>
-                  {word}
-                </motion.span>
-              ))}
-            </span>
+          <h1 className="mb-6 max-w-4xl text-balance text-4xl font-bold leading-[1.05] tracking-tight text-white drop-shadow-2xl sm:text-6xl lg:text-7xl">
+            {words.map((word, index) => (
+              <motion.span key={`${word}-${index}`} className="mr-[0.25em] inline-block" {...entrance(1.5 + index * 0.08)}>
+                {word}
+              </motion.span>
+            ))}
           </h1>
 
           <motion.p
