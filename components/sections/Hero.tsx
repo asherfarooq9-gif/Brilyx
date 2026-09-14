@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { SITE, whatsappUrl } from "@/lib/site";
 import { Button } from "@/components/ui/Button";
 import { VolumetricStudio } from "@/components/ui/volumetric-studio";
@@ -18,6 +18,10 @@ export function Hero() {
   const exitOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
   const dimOpacity = useTransform(scrollYProgress, [0, 0.9], [0, 0.85]);
 
+  // Drop the WebGL spotlight beams once the hero is off-screen — no point paying
+  // the GPU/battery cost for a canvas nobody can see.
+  const isInView = useInView(sectionRef, { margin: "200px 0px" });
+
   const entrance = (delay: number) =>
     prefersReduced
       ? {}
@@ -33,7 +37,11 @@ export function Hero() {
         style={prefersReduced ? undefined : { scale: exitScale, opacity: exitOpacity }}
         className="relative origin-top"
       >
-        <VolumetricStudio skipFlicker={!!prefersReduced} className="min-h-[560px] sm:min-h-[720px] lg:min-h-[820px]">
+        <VolumetricStudio
+          skipFlicker={!!prefersReduced}
+          renderCanvas={isInView}
+          className="min-h-[560px] sm:min-h-[720px] lg:min-h-[820px]"
+        >
           <div className="flex h-full min-h-[560px] w-full flex-col items-center justify-center px-4 text-center sm:min-h-[720px] lg:min-h-[820px]">
             <motion.span
               {...entrance(1.3)}

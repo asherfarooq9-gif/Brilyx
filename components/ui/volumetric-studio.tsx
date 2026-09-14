@@ -20,6 +20,8 @@ type RoomProps = {
   vignette?: number;
   isFlickering?: boolean;
   className?: string;
+  /** Mount the WebGL spotlight beams. Set false to drop the GPU cost once scrolled out of view. */
+  renderCanvas?: boolean;
 };
 
 function Room({
@@ -36,6 +38,7 @@ function Room({
   vignette = 0.55,
   isFlickering = false,
   className = "",
+  renderCanvas = true,
 }: RoomProps) {
   const { tl, tr, br, bl } = backWall;
   const poly = useMemo(
@@ -157,7 +160,7 @@ function Room({
         />
       </div>
       <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 16, mixBlendMode: "screen" }}>
-        {spots.map((pos, i) => (
+        {renderCanvas && spots.map((pos, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0 }}
@@ -171,7 +174,13 @@ function Room({
               willChange: "opacity",
             }}
           >
-            <Canvas camera={{ position: [0, 0, 10], fov: 45 }} shadows={false} gl={{ alpha: true }}>
+            <Canvas
+              camera={{ position: [0, 0, 10], fov: 45 }}
+              shadows={false}
+              gl={{ alpha: true, antialias: false, powerPreference: "low-power" }}
+              dpr={[1, 1.5]}
+              frameloop="demand"
+            >
               <ambientLight intensity={0.5} />
               <SpotLight
                 distance={12}
@@ -300,11 +309,14 @@ export const VolumetricStudio = ({
   className,
   children,
   skipFlicker = false,
+  renderCanvas = true,
 }: {
   className?: string;
   children?: React.ReactNode;
   /** Skip the flicker-on sequence and show steady light immediately (e.g. for prefers-reduced-motion). */
   skipFlicker?: boolean;
+  /** Mount the WebGL spotlight beams. Set false to drop the GPU cost once scrolled out of view. */
+  renderCanvas?: boolean;
 }) => {
   const [lightsOn, setLightsOn] = useState(skipFlicker);
   const [isFlickering, setIsFlickering] = useState(!skipFlicker);
@@ -344,7 +356,14 @@ export const VolumetricStudio = ({
 
   return (
     <section className={cn("relative w-full h-full min-h-[600px] bg-black overflow-hidden font-sans", className)}>
-      <Room lightsOn={lightsOn} intensity={1} lightColor="230,240,255" spots={[35, 50, 65]} isFlickering={isFlickering} />
+      <Room
+        lightsOn={lightsOn}
+        intensity={1}
+        lightColor="230,240,255"
+        spots={[35, 50, 65]}
+        isFlickering={isFlickering}
+        renderCanvas={renderCanvas}
+      />
       <div className="relative z-10 w-full h-full pointer-events-none">{children}</div>
     </section>
   );
