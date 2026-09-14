@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent, type TouchEvent } from "react";
+import { useRef, useState, type KeyboardEvent, type TouchEvent } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SERVICES } from "@/lib/services";
 import { cn } from "@/lib/cn";
 import { ServiceIcon } from "@/components/ui/ServiceIcon";
@@ -19,18 +18,8 @@ const CARD_GRADIENTS = [
 
 export function ServiceCarousel() {
   const prefersReduced = useReducedMotion();
-  const [active, setActive] = useState(Math.floor(SERVICES.length / 2));
-  const [wide, setWide] = useState(false);
-  const listRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
   const touchStartX = useRef<number | null>(null);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 640px)");
-    const sync = () => setWide(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
 
   const clamp = (n: number) => Math.max(0, Math.min(SERVICES.length - 1, n));
   const go = (next: number) => setActive(clamp(next));
@@ -58,13 +47,10 @@ export function ServiceCarousel() {
   };
 
   const activeService = SERVICES[active];
-  const transition = prefersReduced
-    ? { duration: 0 }
-    : { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const };
 
   return (
     <section className="overflow-hidden bg-background text-foreground">
-      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+      <div className="mx-auto max-w-2xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <div className="flex flex-col items-center gap-4 text-center">
           <span className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
             <span className="h-px w-6 bg-accent" aria-hidden />
@@ -74,52 +60,60 @@ export function ServiceCarousel() {
             Five capabilities, one delivery team
           </h2>
           <p className="max-w-xl text-pretty text-sm text-muted-foreground sm:text-base">
-            Swipe or tap a card to see what each engagement covers.
+            Previous, next, or tap a dot to see what each engagement covers.
           </p>
         </div>
 
-        {/* Fanned cards */}
-        <div
-          ref={listRef}
-          role="tablist"
-          aria-label="Services"
-          onKeyDown={onKeyDown}
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
-          className="relative mx-auto mt-12 h-[380px] w-full max-w-xl touch-pan-y sm:mt-14 sm:h-[560px]"
-        >
-          {SERVICES.map((service, index) => {
-            const offset = index - active;
-            const isActive = index === active;
-            const spread = wide ? 66 : 40;
-            const x = offset * spread;
-            const y = Math.abs(offset) * (wide ? 26 : 18);
-            const rotate = offset * (wide ? 7 : 5);
-            const scale = isActive ? 1 : 0.9;
+        <div className="mt-12 sm:mt-14">
+          <div className="mb-4 flex items-center justify-between">
+            <button
+              type="button"
+              onClick={() => go(active - 1)}
+              disabled={active === 0}
+              aria-label="Previous service"
+              className="rounded-lg bg-secondary px-4 py-2 font-medium text-foreground outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30"
+            >
+              Previous
+            </button>
+            <button
+              type="button"
+              onClick={() => go(active + 1)}
+              disabled={active === SERVICES.length - 1}
+              aria-label="Next service"
+              className="rounded-lg bg-secondary px-4 py-2 font-medium text-foreground outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30"
+            >
+              Next
+            </button>
+          </div>
 
-            return (
+          <div
+            role="tablist"
+            aria-label="Services"
+            tabIndex={0}
+            onKeyDown={onKeyDown}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+            className="relative touch-pan-y overflow-hidden rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <AnimatePresence mode="wait" initial={false}>
               <motion.button
-                key={service.slug}
+                key={activeService.slug}
                 type="button"
                 role="tab"
-                id={`service-tab-${service.slug}`}
-                aria-selected={isActive}
+                id={`service-tab-${activeService.slug}`}
+                aria-selected
                 aria-controls="service-panel"
-                tabIndex={isActive ? 0 : -1}
-                onClick={() => setActive(index)}
-                className={cn(
-                  "absolute left-1/2 top-0 h-[320px] w-[178px] origin-bottom overflow-hidden rounded-[22px] border border-border outline-none sm:h-[500px] sm:w-[264px] sm:rounded-[28px]",
-                  "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                  !isActive && "opacity-55",
-                )}
-                style={{ zIndex: 20 - Math.abs(offset) }}
-                animate={{ x: `calc(-50% + ${x}px)`, y, rotate, scale }}
-                transition={transition}
+                onClick={() => go(active)}
+                initial={prefersReduced ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={prefersReduced ? { opacity: 0 } : { opacity: 0 }}
+                transition={{ duration: prefersReduced ? 0 : 0.25 }}
+                className="relative block h-64 w-full cursor-default overflow-hidden sm:h-80"
               >
                 <ServiceImage
-                  src={service.image}
-                  alt={`${service.title} illustration`}
-                  sizes="(max-width: 640px) 178px, 264px"
+                  src={activeService.image}
+                  alt={`${activeService.title} illustration`}
+                  sizes="(max-width: 640px) 100vw, 42rem"
                   imageClassName="object-cover"
                   overlayClassName="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/75 to-transparent"
                   fallback={
@@ -127,7 +121,7 @@ export function ServiceCarousel() {
                       <span
                         className={cn(
                           "absolute inset-0 bg-gradient-to-b",
-                          CARD_GRADIENTS[index % CARD_GRADIENTS.length],
+                          CARD_GRADIENTS[active % CARD_GRADIENTS.length],
                         )}
                         aria-hidden
                       />
@@ -139,29 +133,16 @@ export function ServiceCarousel() {
                   }
                 />
                 <span className="relative flex h-full flex-col items-center justify-end gap-2 p-5">
-                  <ServiceIcon slug={service.slug} className="size-6 text-white/90" />
+                  <ServiceIcon slug={activeService.slug} className="size-6 text-white/90" />
                   <span className="text-center text-sm font-semibold leading-snug text-white">
-                    {service.title}
+                    {activeService.title}
                   </span>
                 </span>
               </motion.button>
-            );
-          })}
-        </div>
+            </AnimatePresence>
+          </div>
 
-        {/* Controls */}
-        <div className="mt-8 flex items-center justify-center gap-4">
-          <button
-            type="button"
-            onClick={() => go(active - 1)}
-            disabled={active === 0}
-            aria-label="Previous service"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground outline-none transition-colors hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30"
-          >
-            <ChevronLeft className="size-4" aria-hidden />
-          </button>
-
-          <div className="flex items-center gap-2">
+          <div className="mt-4 flex items-center justify-center gap-2">
             {SERVICES.map((service, index) => (
               <button
                 key={service.slug}
@@ -170,24 +151,12 @@ export function ServiceCarousel() {
                 aria-label={`Show ${service.title}`}
                 aria-current={index === active}
                 className={cn(
-                  "h-1.5 rounded-full transition-all",
-                  index === active
-                    ? "w-6 bg-foreground"
-                    : "w-1.5 bg-foreground/20 hover:bg-foreground/40",
+                  "h-2 w-2 cursor-pointer rounded-full transition-colors",
+                  index === active ? "bg-accent" : "bg-foreground/20 hover:bg-foreground/40",
                 )}
               />
             ))}
           </div>
-
-          <button
-            type="button"
-            onClick={() => go(active + 1)}
-            disabled={active === SERVICES.length - 1}
-            aria-label="Next service"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground outline-none transition-colors hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30"
-          >
-            <ChevronRight className="size-4" aria-hidden />
-          </button>
         </div>
 
         {/* Active service info */}
@@ -195,7 +164,7 @@ export function ServiceCarousel() {
           id="service-panel"
           role="tabpanel"
           aria-labelledby={`service-tab-${activeService.slug}`}
-          className="mx-auto mt-12 max-w-2xl"
+          className="mt-10"
         >
           <AnimatePresence mode="wait">
             <motion.div
