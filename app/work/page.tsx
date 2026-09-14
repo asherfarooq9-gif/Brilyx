@@ -1,12 +1,28 @@
 import type { Metadata } from "next";
-import { getProjectGroups } from "@/lib/portfolio";
+import { getProjectGroups, PROJECTS, getCategoryLabel } from "@/lib/portfolio";
 import { buildMetadata } from "@/lib/seo";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { GradientText } from "@/components/ui/GradientText";
 import { ProjectCard } from "@/components/ui/ProjectCard";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { HeroCarousel, type HeroCarouselItem } from "@/components/ui/hero-carousel";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { CtaBanner } from "@/components/sections/CtaBanner";
+import { SITE } from "@/lib/site";
+
+const ACCENTS = ["#3b4a6b", "#2f6b5e", "#6b4a2f", "#4a3b6b"];
+
+const HERO_ITEMS: HeroCarouselItem[] = PROJECTS.map((project, i) => ({
+  id: project.slug,
+  title: project.name.replace(/ (?=[^ ]*$)/, "\n"),
+  image: project.image,
+  credit: project.client ? `BY ${project.client.toUpperCase()}` : undefined,
+  meta: [
+    getCategoryLabel(project.category).toUpperCase(),
+    project.status === "in-progress" ? "IN PROGRESS" : "LIVE",
+  ],
+  accent: ACCENTS[i % ACCENTS.length],
+  href: `/work/${project.slug}`,
+}));
 
 export const metadata: Metadata = buildMetadata({
   title: "Case Studies — Web, App & AI Projects We've Shipped",
@@ -20,16 +36,14 @@ export default function WorkPage() {
 
   return (
     <>
-      <section className="mx-auto max-w-6xl px-4 pt-20 pb-8 sm:px-6 sm:pt-28 lg:px-8">
+      <h1 className="sr-only">Work we&apos;ve put into the world</h1>
+      <HeroCarousel items={HERO_ITEMS} brand={SITE.name} className="h-[85vh] min-h-[520px]" />
+
+      <section className="mx-auto max-w-6xl px-4 pt-16 pb-4 sm:px-6 lg:px-8">
         <Reveal>
           <SectionHeading
-            as="h1"
             eyebrow="Our Work"
-            title={
-              <>
-                Work we&apos;ve <GradientText>put into the world</GradientText>
-              </>
-            }
+            title="Every discipline, one team"
             description="Grouped by discipline — websites, apps, AI automations, chatbots, and ML. Every project is a real product we designed, built, and handed back with documentation."
           />
         </Reveal>
