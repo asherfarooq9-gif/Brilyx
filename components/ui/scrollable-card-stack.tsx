@@ -14,6 +14,8 @@ const MIN_SCALE = 0.08;
 const MAX_SCALE = 2;
 const HOVER_SCALE_MULTIPLIER = 1.02;
 const CARD_PADDING = 100;
+const CARD_ASPECT_RATIO = 16 / 10;
+const VIEWPORT_GUTTER = 32;
 
 interface CardItem {
   badge: string;
@@ -47,6 +49,22 @@ const ScrollableCardStack: React.FC<ScrollableCardStackProps> = ({
   const scrollY = useMotionValue(0);
   const lastScrollTime = useRef(0);
   const shouldReduceMotion = useReducedMotion();
+
+  const [viewportWidth, setViewportWidth] = useState(() =>
+    typeof window === "undefined" ? Number.POSITIVE_INFINITY : window.innerWidth,
+  );
+
+  useEffect(() => {
+    const update = () => setViewportWidth(window.innerWidth);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  // Cards are fixed-height with a 16:10 aspect ratio, so a large cardHeight
+  // prop can render wider than a phone screen. Clamp the effective height so
+  // the card's derived width always fits within the viewport.
+  const effectiveCardHeight = Math.min(cardHeight, (viewportWidth - VIEWPORT_GUTTER) / CARD_ASPECT_RATIO);
 
   const totalItems = items.length;
   const maxIndex = totalItems - 1;
@@ -216,7 +234,7 @@ const ScrollableCardStack: React.FC<ScrollableCardStackProps> = ({
         ref={containerRef}
         role="application"
         style={{
-          minHeight: `${cardHeight + CARD_PADDING}px`,
+          minHeight: `${effectiveCardHeight + CARD_PADDING}px`,
           perspective: `${perspective}px`,
           perspectiveOrigin: "center 60%",
           touchAction: "none",
@@ -247,7 +265,7 @@ const ScrollableCardStack: React.FC<ScrollableCardStackProps> = ({
               style={{
                 borderWidth: `${2 / transform.scale}px`,
                 filter: `blur(${transform.blur}px)`,
-                height: `${cardHeight}px`,
+                height: `${effectiveCardHeight}px`,
                 opacity: transform.opacity,
                 pointerEvents: isActive ? "auto" : "none",
                 transformOrigin: "center center",
@@ -278,7 +296,7 @@ const ScrollableCardStack: React.FC<ScrollableCardStackProps> = ({
                   isHovered && "shadow-xl",
                   isScrolling && isActive && "ring-2 ring-foreground/50",
                 )}
-                style={{ height: `${cardHeight}px` }}
+                style={{ height: `${effectiveCardHeight}px` }}
               >
                 {isScrolling && isActive ? (
                   <div className="absolute -top-1 left-1/2 h-1 w-8 -translate-x-1/2 rounded-full bg-foreground opacity-75" />

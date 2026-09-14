@@ -25,9 +25,9 @@ const HERO_ITEMS: HeroCarouselItem[] = PROJECTS.map((project, i) => ({
 }));
 
 export const metadata: Metadata = buildMetadata({
-  title: "Case Studies — Web, App & AI Projects We've Shipped",
+  title: "Case Studies: Web, App & AI Projects We've Shipped",
   description:
-    "Websites, apps, AI automations, and chatbots Brilyx has designed and built for real clients — grouped by discipline, with the live sites linked.",
+    "Websites, apps, AI automations, and chatbots Brilyx has designed and built for real clients, grouped by discipline, with the live sites linked.",
   path: "/work",
 });
 
@@ -44,7 +44,7 @@ export default function WorkPage() {
           <SectionHeading
             eyebrow="Our Work"
             title="Every discipline, one team"
-            description="Grouped by discipline — websites, apps, AI automations, chatbots, and ML. Every project is a real product we designed, built, and handed back with documentation."
+            description="Grouped by discipline: websites, apps, AI automations, chatbots, and ML. Every project is a real product we designed, built, and handed back with documentation."
           />
         </Reveal>
       </section>
@@ -56,7 +56,7 @@ export default function WorkPage() {
           className="mx-auto max-w-6xl scroll-mt-24 px-4 py-12 sm:px-6 lg:px-8"
         >
           <Reveal>
-            <SectionHeading eyebrow={`${group.projects.length} project${group.projects.length === 1 ? "" : "s"}`} title={group.title} />
+            <SectionHeading title={group.title} />
           </Reveal>
           <Stagger className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {group.projects.map((project) => (

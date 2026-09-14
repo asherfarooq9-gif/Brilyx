@@ -1,6 +1,5 @@
 import { getFeaturedProjects, getCategoryLabel } from "@/lib/portfolio";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { GradientText } from "@/components/ui/GradientText";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/motion/Reveal";
 import ScrollableCardStack from "@/components/ui/scrollable-card-stack";
@@ -25,11 +24,7 @@ export function WorkShowcase() {
         <Reveal>
           <SectionHeading
             eyebrow="Our Work"
-            title={
-              <>
-                Sites and products we&apos;ve <GradientText>shipped</GradientText>
-              </>
-            }
+            title="Sites and products we've shipped"
             description="A selection of the websites and applications we've designed and built for clients. Scroll, swipe, or use the arrow keys."
           />
         </Reveal>

@@ -122,7 +122,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 Visit live site
               </Button>
             ) : (
-              <span className="text-sm text-muted-foreground">In development — launching soon</span>
+              <span className="text-sm text-muted-foreground">In development, launching soon</span>
             )}
           </Reveal>
         </div>

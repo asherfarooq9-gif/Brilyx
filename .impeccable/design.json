@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-14T00:00:00.000Z",
+  "title": "Design System: Brilyx",
+  "extensions": {
+    "colorMeta": {
+      "ink": { "role": "primary", "displayName": "Ink", "canonical": "oklch(0% 0 0)", "tonalRamp": ["#050505", "#0a0a0a", "#18181b", "#27272a", "#3f3f46", "#52525b", "#71717a", "#a1a1aa"] },
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "oklch(100% 0 0)", "tonalRamp": ["#0a0a0a", "#18181b", "#3f3f46", "#71717a", "#a1a1aa", "#d4d4d8", "#e4e4e7", "#ffffff"] },
+      "surface": { "role": "neutral", "displayName": "Surface", "canonical": "oklch(100% 0 0)", "tonalRamp": ["#101012", "#18181b", "#27272a", "#3f3f46", "#71717a", "#a1a1aa", "#e4e4e7", "#ffffff"] },
+      "panel": { "role": "neutral", "displayName": "Panel", "canonical": "oklch(96% 0 0)", "tonalRamp": ["#1c1c1f", "#27272a", "#3f3f46", "#52525b", "#71717a", "#a1a1aa", "#d4d4d8", "#f4f4f5"] },
+      "muted-text": { "role": "neutral", "displayName": "Muted Text", "canonical": "oklch(50% 0 0)", "tonalRamp": ["#18181b", "#27272a", "#3f3f46", "#52525b", "#71717a", "#a1a1aa", "#d4d4d8", "#e4e4e7"] },
+      "signal": { "role": "accent", "displayName": "Signal Grey", "canonical": "oklch(38% 0 0)", "tonalRamp": ["#18181b", "#27272a", "#3f3f46", "#52525b", "#71717a", "#a1a1aa", "#d4d4d8", "#e4e4e7"] },
+      "line": { "role": "neutral", "displayName": "Line", "canonical": "oklch(91% 0 0)", "tonalRamp": ["#18181b", "#27272a", "#3f3f46", "#52525b", "#71717a", "#a1a1aa", "#d4d4d8", "#e4e4e7"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Section and page headings (SectionHeading title, hero headlines)." },
+      "body": { "displayName": "Body", "purpose": "Paragraph copy, descriptions, summaries." },
+      "label": { "displayName": "Label", "purpose": "Eyebrows, category tags, stack chips, status badges. Always mono, uppercase, wide tracking." }
+    },
+    "shadows": [
+      { "name": "card-hover-lift", "value": "0 18px 40px -18px rgba(10,10,10,0.25)", "purpose": "ProjectCard hover/focus-visible lift. Never applied at rest." },
+      { "name": "button-primary-hover", "value": "0 10px 15px -3px rgba(10,10,10,0.2), 0 4px 6px -4px rgba(10,10,10,0.2)", "purpose": "Primary button hover, tinted to ink at 20% opacity." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default state-change easing (buttons, cards)." },
+      { "name": "duration-fast", "value": "150ms", "purpose": "Micro state feedback (color/border changes)." },
+      { "name": "duration-standard", "value": "200-300ms", "purpose": "Lift/scale/shadow transitions on hover." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ink-filled CTA; lifts 2px with a tinted shadow on hover, returns flat on active.",
+      "html": "<button class=\"ds-btn-primary\">See all work</button>",
+      "css": ".ds-btn-primary { background: #0a0a0a; color: #fafafa; border: none; border-radius: 0.5rem; padding: 0 1.5rem; height: 2.75rem; font-weight: 500; font-size: 0.875rem; font-family: Inter, ui-sans-serif, sans-serif; transition: transform 200ms cubic-bezier(0.4,0,0.2,1), box-shadow 200ms cubic-bezier(0.4,0,0.2,1); } .ds-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(10,10,10,0.2), 0 4px 6px -4px rgba(10,10,10,0.2); } .ds-btn-primary:focus-visible { outline: 2px solid #0a0a0a; outline-offset: 2px; } .ds-btn-primary:active { transform: translateY(0); }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Paper-filled secondary CTA; border and text shift to signal grey on hover.",
+      "html": "<button class=\"ds-btn-outline\">See all work</button>",
+      "css": ".ds-btn-outline { background: #ffffff; color: #0a0a0a; border: 1px solid #e4e4e7; border-radius: 0.5rem; padding: 0 1.5rem; height: 2.75rem; font-weight: 500; font-size: 0.875rem; font-family: Inter, ui-sans-serif, sans-serif; transition: transform 200ms cubic-bezier(0.4,0,0.2,1), border-color 200ms, color 200ms; } .ds-btn-outline:hover { border-color: #52525b; color: #52525b; transform: translateY(-2px); } .ds-btn-outline:focus-visible { outline: 2px solid #0a0a0a; outline-offset: 2px; }"
+    },
+    {
+      "name": "Project Card",
+      "kind": "card",
+      "refersTo": "card-project",
+      "description": "Screenshot-led work card: image bleeds to the card edge, mono meta line, name, summary, mono tags, sheen line on hover.",
+      "html": "<a class=\"ds-card-project\" href=\"#\"><span class=\"ds-card-sheen\"></span><div class=\"ds-card-image\"><img src=\"\" alt=\"\" /></div><span class=\"ds-card-meta\">Web · 2026</span><h3 class=\"ds-card-title\">Project Name</h3><p class=\"ds-card-summary\">One-line summary of the project.</p><span class=\"ds-card-cta\">View case study →</span></a>",
+      "css": ".ds-card-project { display: flex; flex-direction: column; gap: 1rem; background: #ffffff; border: 1px solid #e4e4e7; border-radius: 1rem; padding: 1.5rem; text-decoration: none; color: inherit; transition: transform 300ms cubic-bezier(0.4,0,0.2,1), box-shadow 300ms cubic-bezier(0.4,0,0.2,1), border-color 300ms; } .ds-card-project:hover, .ds-card-project:focus-visible { transform: translateY(-4px); border-color: transparent; box-shadow: 0 18px 40px -18px rgba(10,10,10,0.25); } .ds-card-sheen { position: absolute; inset: 0 0 auto 0; height: 2px; background: linear-gradient(135deg, #a1a1aa, #52525b); transform: scaleX(0); transform-origin: left; transition: transform 300ms; } .ds-card-project:hover .ds-card-sheen { transform: scaleX(1); } .ds-card-meta { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.16em; color: #71717a; } .ds-card-title { font-family: 'Space Grotesk', Inter, sans-serif; font-size: 1.125rem; font-weight: 600; color: #0a0a0a; } .ds-card-summary { font-size: 0.875rem; line-height: 1.6; color: #71717a; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Blueprint Room",
+    "overview": "Brilyx is an engineering studio's proof-of-work site, not an agency showreel. The system reads like a precise drafting room: one ink color, one sheet of paper, a single grey signal used for everything that needs attention. Nothing is drenched, nothing glows, nothing performs. Credibility comes from what's shown (real client work, real stacks, real links) and from the discipline of the frame around it, not from decoration. This explicitly rejects flashy agency/Awwwards portfolio tropes (scroll-hijacking, gradient hero blobs, motion for its own sake) and the generic dev-portfolio template look (identical icon-card grids, tech-tag pill soup with no hierarchy). It also rejects every AI-slop tell by default: no eyebrow label on every section, no em-dashes, no gradient text, no side-stripe borders.",
+    "keyCharacteristics": [
+      "Monochrome ink-on-paper, one grey signal color, no brand hue.",
+      "Flat by default; elevation is a hover/focus response, never a resting state.",
+      "Mono labels (JetBrains Mono, uppercase, wide tracking) mark metadata, never prose.",
+      "Soft-but-tight radius scale (0.5-1rem) applied consistently: buttons tighter than cards.",
+      "Motion is a 150-300ms state response (translate + shadow), not a scroll-driven set piece."
+    ],
+    "rules": [
+      { "name": "The One Ink Rule", "body": "There is exactly one dark value (ink) and one light value (paper) per theme. Nothing else is introduced as a pop color.", "section": "colors" },
+      { "name": "The One Eyebrow Rule", "body": "Use SectionHeading's eyebrow prop on at most one section in every three; a mono eyebrow above every single section header is the single most common AI-generated-site tell.", "section": "typography" },
+      { "name": "The Flat-At-Rest Rule", "body": "No card, button, or panel carries a shadow while idle. Depth is earned only by interaction.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep every Work surface to the same two neutrals + one signal grey; no category, tag, or status gets its own color.",
+      "Do let real screenshots and real client names carry credibility; a project card with no image is a placeholder, not a finished card.",
+      "Do cap eyebrows at one per three sections on the /work page.",
+      "Do keep card and button radii on their respective scale steps, never mix in a third radius.",
+      "Do treat the Scrollable Card Stack as a homepage-only signature; the /work index page should stay grid-based."
+    ],
+    "donts": [
+      "Don't introduce a gradient hero blob, scroll-hijacked pinned sections, or Awwwards-style choreography on the Work pages.",
+      "Don't ship an em-dash anywhere in Work copy.",
+      "Don't stack three or more identical card-grid sections back to back without varying the composition.",
+      "Don't add a second accent hue to distinguish project categories or status badges.",
+      "Don't give any card or panel a resting shadow."
+    ]
+  }
+}

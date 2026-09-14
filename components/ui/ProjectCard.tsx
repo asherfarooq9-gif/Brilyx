@@ -74,7 +74,7 @@ export function ProjectCard({ project, showCategory = true, className }: Project
 
       {isInProgress ? (
         <span className="mt-auto pt-2 text-sm font-medium text-muted-foreground">
-          In development — launching soon
+          In development, launching soon
         </span>
       ) : (
         <span className="mt-auto inline-flex items-center gap-1 pt-2 text-sm font-medium text-foreground">
