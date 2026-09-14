@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { GradientText } from "@/components/ui/GradientText";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { CtaBanner } from "@/components/sections/CtaBanner";
@@ -9,11 +8,26 @@ import { TEAM } from "@/lib/team";
 import { TeamAvatar } from "@/components/ui/TeamAvatar";
 
 export const metadata: Metadata = buildMetadata({
-  title: "About Brilyx — Our Engineering Studio & Team",
+  title: "About Brilyx: Our Engineering Studio & Team",
   description:
-    "Brilyx pairs machine learning engineers with product builders to ship production systems — not demos. Meet the team and how we work.",
+    "Brilyx pairs machine learning engineers with product builders to ship production systems, not demos. Meet the team and how we work.",
   path: "/about",
 });
+
+const STORY = [
+  {
+    label: "The pattern",
+    body: "We kept getting called in to rescue machine learning projects that had lost momentum right after the first demo.",
+  },
+  {
+    label: "The gap",
+    body: "It was always the same story: no evaluation, no monitoring, no clear owner once the prototype worked.",
+  },
+  {
+    label: "The fix",
+    body: "So we built a studio that treats deployment, observability, and handover as part of the work, not an afterthought.",
+  },
+];
 
 const VALUES = [
   {
@@ -42,35 +56,31 @@ export default function AboutPage() {
           <SectionHeading
             as="h1"
             eyebrow="About"
-            title={
-              <>
-                We started Brilyx to close the gap between{" "}
-                <GradientText>a demo and a product</GradientText>
-              </>
-            }
-            description="Too many AI projects stall after the proof of concept. Brilyx exists to carry them the rest of the way — into production, with monitoring, and back into your team's hands."
+            title="We started Brilyx to close the gap between a demo and a product"
+            description="Too many AI projects stall after the proof of concept. Brilyx exists to carry them the rest of the way: into production, with monitoring, and back into your team's hands."
           />
         </Reveal>
       </section>
 
       <section className="border-y border-border bg-secondary/40">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8">
-          <Reveal className="flex flex-col gap-4">
+          <Reveal className="flex flex-col gap-5">
             <h2 className="text-2xl font-semibold tracking-tight text-foreground">Our story</h2>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              Brilyx began as a group of engineers who kept being called in to rescue
-              machine learning projects that had lost momentum after the first demo. The
-              patterns were always the same: no evaluation, no monitoring, no clear owner.
-            </p>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              So we built a studio around fixing that — a team that treats deployment,
-              observability, and handover as part of the work, not an afterthought.
-            </p>
+            <ul className="flex flex-col gap-4">
+              {STORY.map((item) => (
+                <li key={item.label} className="flex gap-3">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground" aria-hidden />
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    <span className="font-semibold text-foreground">{item.label}.</span> {item.body}
+                  </p>
+                </li>
+              ))}
+            </ul>
           </Reveal>
           <Reveal className="flex flex-col gap-4" delay={0.1}>
             <h2 className="text-2xl font-semibold tracking-tight text-foreground">Our mission</h2>
             <p className="rounded-xl border border-border bg-card p-6 text-base leading-relaxed text-foreground">
-              To help teams put intelligent systems into production responsibly — and to
+              To help teams put intelligent systems into production responsibly, and to
               leave every client more capable than we found them.
             </p>
           </Reveal>
@@ -79,14 +89,17 @@ export default function AboutPage() {
 
       <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
         <Reveal>
-          <SectionHeading eyebrow="Values" title="How we work" />
+          <SectionHeading title="How we work" />
         </Reveal>
-        <Stagger className="mt-10 grid gap-5 sm:grid-cols-2">
+        <Stagger className="mt-10 grid gap-x-10 gap-y-8 border-t border-border pt-8 sm:grid-cols-2">
           {VALUES.map((value) => (
             <StaggerItem key={value.title}>
-              <div className="flex h-full flex-col gap-3 rounded-xl border border-border bg-card p-6">
-                <h3 className="text-base font-semibold text-foreground">{value.title}</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">{value.body}</p>
+              <div className="flex gap-4">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground" aria-hidden />
+                <div className="flex flex-col gap-1.5">
+                  <h3 className="text-base font-semibold text-foreground">{value.title}</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{value.body}</p>
+                </div>
               </div>
             </StaggerItem>
           ))}
