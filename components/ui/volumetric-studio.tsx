@@ -180,6 +180,7 @@ function Room({
               gl={{ alpha: true, antialias: false, powerPreference: "low-power" }}
               dpr={[1, 1.5]}
               frameloop="demand"
+              style={{ pointerEvents: "none" }}
             >
               <ambientLight intensity={0.5} />
               <SpotLight
