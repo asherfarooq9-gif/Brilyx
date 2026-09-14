@@ -6,8 +6,14 @@
       {
         "rule": "overused-font",
         "value": "arial",
-        "reason": "Vendored GlyphPortal library canvas/clip-path fallback font stack (DEFAULT_FONT), not a UI typography choice. Site's real display font is Space Grotesk; Arial only used if that fails to load.",
-        "createdAt": "2026-09-13T23:22:06.581Z"
+        "createdAt": "2026-09-13T23:22:06.581Z",
+        "reason": "Vendored GlyphPortal library canvas/clip-path fallback font stack (DEFAULT_FONT), not a UI typography choice. Site's real display font is Space Grotesk; Arial only used if that fails to load."
+      },
+      {
+        "rule": "bounce-easing",
+        "value": "animate-bounce",
+        "createdAt": "2026-09-14T08:54:58.719Z",
+        "reason": "Typing-indicator dots (three bouncing dots = standard chat UI convention, e.g. iMessage/WhatsApp), not decorative bounce on content"
       }
     ]
   }
