@@ -1,32 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { SITE, whatsappUrl } from "@/lib/site";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/card";
-import { SplineScene } from "@/components/ui/splite";
-
-const SPLINE_SCENE = "https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode";
+import { VolumetricStudio } from "@/components/ui/volumetric-studio";
 
 export function Hero() {
   const prefersReduced = useReducedMotion();
-  const sceneRef = useRef<HTMLDivElement>(null);
-  // The scene mounts only while the hero is on screen and unmounts on scroll, so
-  // the WebGL render loop and GPU context are freed once you scroll past.
-  const sceneInView = useInView(sceneRef, { margin: "200px 0px" });
-  // On a coarse pointer (touch) the scene is display-only — pointer-events:none so
-  // a drag can't trap page scroll. Fine pointers get drag-to-rotate.
-  const [isFinePointer, setIsFinePointer] = useState(false);
   const words = SITE.tagline.split(" ");
 
-  useEffect(() => {
-    const mq = window.matchMedia("(pointer: fine)");
-    const sync = () => setIsFinePointer(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
+  // Parallax exit: as the hero scrolls past, the studio pulls back (scales down),
+  // fades, and the lights dim — like a camera retreating out of the room.
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+  const exitScale = useTransform(scrollYProgress, [0, 1], [1, 0.88]);
+  const exitOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const dimOpacity = useTransform(scrollYProgress, [0, 0.9], [0, 0.85]);
 
   const entrance = (delay: number) =>
     prefersReduced
@@ -37,53 +27,43 @@ export function Hero() {
           transition: { duration: 0.5, delay },
         };
 
-  const showScene = sceneInView && !prefersReduced;
-
   return (
-    <section className="mx-auto max-w-6xl px-4 pt-10 pb-16 sm:px-6 sm:pt-14 sm:pb-20 lg:px-8">
-      <Card className="relative w-full overflow-hidden rounded-2xl border-zinc-800 bg-zinc-950 shadow-[0_30px_80px_-40px_rgba(10,10,10,0.55)]">
-        <div className="flex flex-col md:min-h-[520px] md:flex-row">
-          {/* Left: name + tagline */}
-          <div className="relative z-10 flex flex-1 flex-col justify-center gap-5 p-6 sm:gap-6 sm:p-12">
+    <section ref={sectionRef} className="relative w-full overflow-hidden">
+      <motion.div
+        style={prefersReduced ? undefined : { scale: exitScale, opacity: exitOpacity }}
+        className="relative origin-top"
+      >
+        <VolumetricStudio skipFlicker={!!prefersReduced} className="min-h-[560px] sm:min-h-[720px] lg:min-h-[820px]">
+          <div className="flex h-full min-h-[560px] w-full flex-col items-center justify-center px-4 text-center sm:min-h-[720px] lg:min-h-[820px]">
             <motion.span
-              {...entrance(0)}
-              className="inline-flex w-fit items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/70 px-3 py-1.5 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-zinc-400 sm:px-4 sm:text-xs sm:tracking-[0.18em]"
+              {...entrance(1.3)}
+              className="pointer-events-auto mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-white/50 sm:px-4 sm:text-xs sm:tracking-[0.18em]"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-zinc-500" aria-hidden />
+              <span className="h-1.5 w-1.5 rounded-full bg-white/60" aria-hidden />
               {SITE.name} · Engineering studio
             </motion.span>
 
-            <h1 className="max-w-xl text-balance text-3xl font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl sm:leading-[1.05] lg:text-6xl">
-              <span className="sr-only">AI/ML, web &amp; app development studio — </span>
-              {words.map((word, index) => (
-                <motion.span
-                  key={`${word}-${index}`}
-                  className="mr-[0.25em] inline-block"
-                  {...entrance(0.1 + index * 0.06)}
-                >
-                  {index >= words.length - 1 ? (
-                    <span className="bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
-                      {word}
-                    </span>
-                  ) : (
-                    word
-                  )}
-                </motion.span>
-              ))}
+            <h1 className="mb-6 max-w-4xl text-balance text-4xl font-bold leading-[1.05] tracking-tight text-transparent sm:text-6xl lg:text-7xl">
+              <span className="sr-only">{SITE.tagline}</span>
+              <span aria-hidden className="bg-linear-to-b from-white to-white/40 bg-clip-text drop-shadow-2xl">
+                {words.map((word, index) => (
+                  <motion.span key={`${word}-${index}`} className="mr-[0.25em] inline-block" {...entrance(1.5 + index * 0.08)}>
+                    {word}
+                  </motion.span>
+                ))}
+              </span>
             </h1>
 
             <motion.p
-              {...entrance(0.35)}
-              className="max-w-md text-pretty text-base leading-relaxed text-zinc-400 sm:text-lg"
+              {...entrance(1.9)}
+              className="mb-10 max-w-2xl text-pretty text-base font-medium leading-relaxed text-white/50 sm:text-lg"
             >
-              We build AI/ML systems, applications, web platforms, automations, and
-              chatbots — shipped to production with the monitoring and craft to keep them
-              there.
+              {SITE.description}
             </motion.p>
 
             <motion.div
-              {...entrance(0.45)}
-              className="flex flex-col gap-3 sm:flex-row [&>*]:w-full sm:[&>*]:w-auto"
+              {...entrance(2.1)}
+              className="pointer-events-auto flex w-full flex-col gap-3 sm:w-auto sm:flex-row [&>*]:w-full sm:[&>*]:w-auto"
             >
               <Button href={whatsappUrl()} external size="lg" variant="secondary">
                 Start a project
@@ -99,36 +79,15 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Right: 3D robot (same on mobile and desktop, one continuous black surface with the left panel) */}
-          <div
-            ref={sceneRef}
-            className="relative h-[240px] w-full overflow-hidden sm:h-[340px] md:h-auto md:min-h-[520px] md:flex-1"
-          >
-            <div className="absolute inset-0 dot-grid opacity-[0.14]" aria-hidden />
-            <div
-              className="absolute inset-0 bg-[radial-gradient(circle_at_62%_42%,rgba(161,161,170,0.22),transparent_62%)]"
+          {prefersReduced ? null : (
+            <motion.div
+              style={{ opacity: dimOpacity }}
+              className="pointer-events-none absolute inset-0 z-[5] bg-black"
               aria-hidden
             />
-            <div className="absolute inset-0 flex items-center justify-center" aria-hidden>
-              <div className="relative flex h-32 w-32 items-center justify-center sm:h-44 sm:w-44">
-                <span className="absolute inset-0 rounded-[36%] border border-white/10" />
-                <span className="absolute inset-4 rounded-[36%] border border-white/[0.07]" />
-                <span className="bg-gradient-to-r from-white to-zinc-400 bg-clip-text font-mono text-xl font-semibold tracking-tight text-transparent sm:text-2xl">
-                  AI
-                </span>
-              </div>
-            </div>
-
-            {showScene ? (
-              <SplineScene
-                scene={SPLINE_SCENE}
-                interactive={isFinePointer}
-                className="absolute inset-0 h-full w-full"
-              />
-            ) : null}
-          </div>
-        </div>
-      </Card>
+          )}
+        </VolumetricStudio>
+      </motion.div>
     </section>
   );
 }
