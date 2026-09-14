@@ -15,14 +15,10 @@ platforms, automations, and chatbots.
 - Space Grotesk (headings) + Inter (body) + JetBrains Mono (labels) via `next/font`
 - Monochrome palette — neutral grey accent, no brand colour
 - Contact → click-to-chat WhatsApp deep link (`whatsappUrl()` in `lib/site.ts`)
-- Hero 3D scene → Spline `<spline-viewer>` web component, loaded from the unpkg CDN
-  at runtime (see `components/ui/splite.tsx`). No build-time WebGL/DRACO assets; the
-  scene URL is `SPLINE_SCENE` in `components/sections/Hero.tsx`. Falls back to a static
-  placeholder under `prefers-reduced-motion` or if the CDN script fails.
-
-> The Spline viewer is the one external runtime dependency. If you add a Content
-> Security Policy, allow `script-src https://unpkg.com` and the `connect-src` /
-> `worker-src` origins Spline needs (`https://unpkg.com`, `https://prod.spline.design`).
+- Hero → WebGL "volumetric studio" spotlight room (see `components/ui/volumetric-studio.tsx`),
+  built on `@react-three/fiber` + `@react-three/drei`, with a flicker-on lighting intro and
+  a scroll-driven parallax exit. Skips the flicker and scroll transforms under
+  `prefers-reduced-motion`.
 
 ## Getting started
 
