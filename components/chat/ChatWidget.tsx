@@ -85,20 +85,20 @@ export function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.97 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="fixed inset-0 z-50 flex h-[100dvh] w-full flex-col overflow-hidden bg-card sm:inset-auto sm:bottom-24 sm:left-6 sm:h-[min(32rem,70dvh)] sm:w-[min(22rem,calc(100vw-2.5rem))] sm:rounded-2xl sm:border sm:border-border sm:shadow-2xl"
+            className="fixed inset-0 z-50 flex h-[100dvh] w-full flex-col overflow-hidden bg-linear-to-b from-zinc-900 via-black to-zinc-950 sm:inset-auto sm:bottom-24 sm:left-6 sm:h-[min(32rem,70dvh)] sm:w-[min(22rem,calc(100vw-2.5rem))] sm:rounded-2xl sm:border sm:border-white/10 sm:shadow-2xl"
           >
             <div
-              className="flex items-center justify-between border-b border-border px-4 py-3 sm:pt-3"
+              className="flex items-center justify-between border-b border-white/10 px-4 py-3 sm:pt-3"
               style={{ paddingTop: "max(0.75rem, env(safe-area-inset-top))" }}
             >
               <div>
-                <p className="text-sm font-semibold text-foreground">{SITE.name} Assistant</p>
-                <p className="text-xs text-muted-foreground">Usually replies in a minute</p>
+                <p className="text-sm font-semibold text-white">{SITE.name} Assistant</p>
+                <p className="text-xs text-white/50">Usually replies in a minute</p>
               </div>
               <button
                 aria-label="Close chat"
                 onClick={() => setOpen(false)}
-                className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                className="rounded-full p-2 text-white/50 transition-colors hover:bg-white/10 hover:text-white"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -109,17 +109,17 @@ export function ChatWidget() {
                 <div
                   key={i}
                   className={cn(
-                    "max-w-[85%] whitespace-pre-wrap rounded-2xl px-3 py-2 text-sm",
+                    "max-w-[85%] whitespace-pre-wrap rounded-2xl px-3 py-2 text-sm text-white",
                     message.role === "user"
-                      ? "ml-auto bg-primary text-primary-foreground"
-                      : "bg-muted text-foreground"
+                      ? "ml-auto bg-linear-to-br from-zinc-600 to-zinc-800"
+                      : "bg-white/10"
                   )}
                 >
                   {message.content}
                 </div>
               ))}
               {isLoading && (
-                <div className="flex items-center gap-1 rounded-2xl bg-muted px-3 py-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-1 rounded-2xl bg-white/10 px-3 py-2 text-sm text-white/50">
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.3s]" />
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.15s]" />
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current" />
@@ -128,14 +128,14 @@ export function ChatWidget() {
             </div>
 
             <div
-              className="border-t border-border p-2"
+              className="border-t border-white/10 p-2"
               style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
             >
               <PromptInputBox
                 onSend={handleSend}
                 isLoading={isLoading}
                 placeholder="Ask about a project…"
-                className="border-none bg-transparent p-0 shadow-none"
+                className="border-none bg-transparent p-0 shadow-none [&_button]:bg-white [&_button]:text-black [&_button:hover]:bg-white/80 [&_textarea]:text-white [&_textarea]:placeholder:text-white/40"
               />
             </div>
           </motion.div>
