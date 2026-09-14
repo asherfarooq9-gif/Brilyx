@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { SITE, whatsappUrl } from "@/lib/site";
 import { Button } from "@/components/ui/Button";
 import { VolumetricStudio } from "@/components/ui/volumetric-studio";
@@ -10,16 +10,9 @@ export function Hero() {
   const prefersReduced = useReducedMotion();
   const words = SITE.tagline.split(" ");
 
-  // Parallax exit: as the hero scrolls past, the studio pulls back (scales down),
-  // fades, and the lights dim — like a camera retreating out of the room.
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
-  const exitScale = useTransform(scrollYProgress, [0, 1], [1, 0.88]);
-  const exitOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const dimOpacity = useTransform(scrollYProgress, [0, 0.9], [0, 0.85]);
-
   // Drop the WebGL spotlight beams once the hero is off-screen — no point paying
   // the GPU/battery cost for a canvas nobody can see.
+  const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { margin: "200px 0px" });
 
   const entrance = (delay: number) =>
@@ -33,69 +26,59 @@ export function Hero() {
 
   return (
     <section ref={sectionRef} className="relative w-full overflow-hidden">
-      <motion.div
-        style={prefersReduced ? undefined : { scale: exitScale, opacity: exitOpacity }}
-        className="relative origin-top"
+      <VolumetricStudio
+        skipFlicker={!!prefersReduced}
+        renderCanvas={isInView}
+        className="min-h-[560px] sm:min-h-[720px] lg:min-h-[820px]"
       >
-        <VolumetricStudio
-          skipFlicker={!!prefersReduced}
-          renderCanvas={isInView}
-          className="min-h-[560px] sm:min-h-[720px] lg:min-h-[820px]"
-        >
-          <div className="flex h-full min-h-[560px] w-full flex-col items-center justify-center px-4 text-center sm:min-h-[720px] lg:min-h-[820px]">
-            <motion.span
-              {...entrance(1.3)}
-              className="pointer-events-auto mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-white/50 sm:px-4 sm:text-xs sm:tracking-[0.18em]"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-white/60" aria-hidden />
-              {SITE.name} · Engineering studio
-            </motion.span>
+        <div className="flex h-full min-h-[560px] w-full flex-col items-center justify-center px-4 text-center sm:min-h-[720px] lg:min-h-[820px]">
+          <motion.span
+            {...entrance(1.3)}
+            className="pointer-events-auto mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-white/50 sm:px-4 sm:text-xs sm:tracking-[0.18em]"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-white/60" aria-hidden />
+            {SITE.name} · Engineering studio
+          </motion.span>
 
-            <h1 className="mb-6 max-w-4xl text-balance text-4xl font-bold leading-[1.05] tracking-tight text-transparent sm:text-6xl lg:text-7xl">
-              <span className="sr-only">{SITE.tagline}</span>
-              <span aria-hidden className="bg-linear-to-b from-white to-white/40 bg-clip-text drop-shadow-2xl">
-                {words.map((word, index) => (
-                  <motion.span key={`${word}-${index}`} className="mr-[0.25em] inline-block" {...entrance(1.5 + index * 0.08)}>
-                    {word}
-                  </motion.span>
-                ))}
-              </span>
-            </h1>
-
-            <motion.p
-              {...entrance(1.9)}
-              className="mb-10 max-w-2xl text-pretty text-base font-medium leading-relaxed text-white/50 sm:text-lg"
-            >
-              {SITE.description}
-            </motion.p>
-
-            <motion.div
-              {...entrance(2.1)}
-              className="pointer-events-auto flex w-full flex-col gap-3 sm:w-auto sm:flex-row [&>*]:w-full sm:[&>*]:w-auto"
-            >
-              <Button href={whatsappUrl()} external size="lg" variant="secondary">
-                Start a project
-              </Button>
-              <Button
-                href="/services"
-                size="lg"
-                variant="outline"
-                className="border-white/25 bg-transparent text-white hover:border-white/40 hover:bg-white/10 hover:text-white"
-              >
-                Explore services
-              </Button>
-            </motion.div>
-          </div>
-
-          {prefersReduced ? null : (
-            <motion.div
-              style={{ opacity: dimOpacity }}
-              className="pointer-events-none absolute inset-0 z-[5] bg-black"
+          <h1 className="mb-6 max-w-4xl text-balance text-4xl font-bold leading-[1.05] tracking-tight text-transparent sm:text-6xl lg:text-7xl">
+            <span className="sr-only">{SITE.tagline}</span>
+            <span
               aria-hidden
-            />
-          )}
-        </VolumetricStudio>
-      </motion.div>
+              className="bg-linear-to-b from-white to-white/40 bg-clip-text text-transparent drop-shadow-2xl [-webkit-text-fill-color:transparent]"
+            >
+              {words.map((word, index) => (
+                <motion.span key={`${word}-${index}`} className="mr-[0.25em] inline-block" {...entrance(1.5 + index * 0.08)}>
+                  {word}
+                </motion.span>
+              ))}
+            </span>
+          </h1>
+
+          <motion.p
+            {...entrance(1.9)}
+            className="mb-10 max-w-2xl text-pretty text-base font-medium leading-relaxed text-white/50 sm:text-lg"
+          >
+            {SITE.description}
+          </motion.p>
+
+          <motion.div
+            {...entrance(2.1)}
+            className="pointer-events-auto flex w-full flex-col gap-3 sm:w-auto sm:flex-row [&>*]:w-full sm:[&>*]:w-auto"
+          >
+            <Button href={whatsappUrl()} external size="lg" variant="secondary">
+              Start a project
+            </Button>
+            <Button
+              href="/services"
+              size="lg"
+              variant="outline"
+              className="border-white/25 bg-transparent text-white hover:border-white/40 hover:bg-white/10 hover:text-white"
+            >
+              Explore services
+            </Button>
+          </motion.div>
+        </div>
+      </VolumetricStudio>
     </section>
   );
 }
