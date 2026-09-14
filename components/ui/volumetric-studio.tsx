@@ -199,7 +199,7 @@ function Room({
           </motion.div>
         ))}
       </div>
-      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 31 }}>
+      <div className="absolute inset-0 hidden pointer-events-none sm:block" style={{ zIndex: 31 }}>
         {[35, 50, 65].map((pos, i) => (
           <div key={i} className="absolute flex flex-col items-center" style={{ left: `${pos}%`, top: "3%", transform: "translate(-50%, -4px)" }}>
             <div
@@ -263,11 +263,11 @@ function Room({
         ))}
       </div>
       <div
-        className="absolute pointer-events-none w-full h-[80px] bg-linear-to-b from-black/60 to-transparent blur-xl"
+        className="absolute pointer-events-none hidden w-full h-[80px] bg-linear-to-b from-black/60 to-transparent blur-xl sm:block"
         style={{ zIndex: 29, top: "4%", left: 0 }}
       />
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 hidden pointer-events-none sm:block"
         style={{
           zIndex: 30,
           clipPath: poly([[0, 0], [100, 0], tr, tl]),
