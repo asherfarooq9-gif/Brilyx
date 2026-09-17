@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { CtaBanner } from "@/components/sections/CtaBanner";
@@ -51,6 +52,14 @@ const VALUES = [
 export default function AboutPage() {
   return (
     <>
+      <div className="mx-auto max-w-6xl px-4 pt-6 sm:px-6 lg:px-8">
+                <Breadcrumbs
+          items={[
+            { name: "Home", href: "/" },
+            { name: "About" },
+          ]}
+        />
+      </div>
       <section className="mx-auto max-w-6xl px-4 pt-20 pb-12 sm:px-6 sm:pt-28 lg:px-8">
         <Reveal>
           <SectionHeading

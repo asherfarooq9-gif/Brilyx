@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import { SITE, SOCIAL_LINKS, whatsappUrl } from "@/lib/site";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { GradientText } from "@/components/ui/GradientText";
 import { Reveal } from "@/components/motion/Reveal";
 import { Button } from "@/components/ui/Button";
@@ -22,6 +23,14 @@ export default function ContactPage() {
           eyebrow="Contact"
           title={
             <>
+      <div className="mx-auto max-w-6xl px-4 pt-6 sm:px-6 lg:px-8">
+                <Breadcrumbs
+          items={[
+            { name: "Home", href: "/" },
+            { name: "Contact" },
+          ]}
+        />
+      </div>
               Let&apos;s talk about <GradientText>what you&apos;re building</GradientText>
             </>
           }

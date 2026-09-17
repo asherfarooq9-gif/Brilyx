@@ -80,7 +80,7 @@ const organizationJsonLd = {
   "@type": "Organization",
   name: SITE.name,
   url: SITE.url,
-  logo: `${SITE.url}/favicon.ico`,
+  logo: `${SITE.url}/org-logo.png`,
   description: SITE.description,
   email: SITE.email,
   telephone: SITE.phoneE164,

@@ -12,6 +12,8 @@ import { GradientText } from "@/components/ui/GradientText";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { CtaBanner } from "@/components/sections/CtaBanner";
+import { JsonLd } from "@/components/JsonLd";
+import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 
 interface ServicePageProps {
   params: Promise<{ slug: string }>;
@@ -77,20 +79,22 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <JsonLd data={serviceJsonLd} />
+      <JsonLd data={faqJsonLd} />
 
       <section className="mx-auto max-w-6xl px-4 pt-20 pb-8 sm:px-6 sm:pt-28 lg:px-8">
         <Reveal>
+          <Breadcrumbs
+            className="mb-6"
+            items={[
+              { name: "Home", href: "/" },
+              { name: "Services", href: "/services" },
+              { name: service.title },
+            ]}
+          />
           <p className="mb-6 text-sm text-muted-foreground">
             <Link href="/services" className="font-medium text-foreground underline-offset-4 hover:underline">
-              ← All services
+              All services
             </Link>
           </p>
           <SectionHeading
@@ -194,7 +198,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
               <>
                 , including{" "}
                 <Link
-                  href="/work/smartride-nemt"
+                  href="/work"
                   className="font-medium text-foreground underline-offset-4 hover:underline"
                 >
                   SmartRide NEMT

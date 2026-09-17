@@ -7,6 +7,7 @@ import { ServiceIcon } from "@/components/ui/ServiceIcon";
 import { ServiceImage } from "@/components/ui/ServiceImage";
 import { Reveal } from "@/components/motion/Reveal";
 import { CtaBanner } from "@/components/sections/CtaBanner";
+import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { cn } from "@/lib/cn";
 import { whatsappUrl } from "@/lib/site";
 
@@ -20,6 +21,14 @@ export const metadata: Metadata = buildMetadata({
 export default function ServicesPage() {
   return (
     <>
+      <div className="mx-auto max-w-6xl px-4 pt-6 sm:px-6 lg:px-8">
+        <Breadcrumbs
+          items={[
+            { name: "Home", href: "/" },
+            { name: "Services" },
+          ]}
+        />
+      </div>
       <Hero
         title="Engineering across the full stack of intelligence."
         subtitle="From model training to the interface your users touch — scoped as fixed engagements with clear deliverables."

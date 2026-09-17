@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getProjectGroups, PROJECTS, getCategoryLabel } from "@/lib/portfolio";
 import { buildMetadata } from "@/lib/seo";
 import { ProjectCard } from "@/components/ui/ProjectCard";
+import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { HeroCarousel, type HeroCarouselItem } from "@/components/ui/hero-carousel";
 import { Reveal } from "@/components/motion/Reveal";
@@ -36,6 +37,14 @@ export default function WorkPage() {
 
   return (
     <>
+      <div className="mx-auto max-w-6xl px-4 pt-6 sm:px-6 lg:px-8">
+                <Breadcrumbs
+          items={[
+            { name: "Home", href: "/" },
+            { name: "Work" },
+          ]}
+        />
+      </div>
       <h1 className="sr-only">Work we&apos;ve put into the world</h1>
       <HeroCarousel items={HERO_ITEMS} brand={SITE.name} className="h-[85vh] min-h-[520px]" />
 
