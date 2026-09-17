@@ -8,7 +8,7 @@ import { CtaBanner } from "@/components/sections/CtaBanner";
 import { buildMetadata } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = buildMetadata({ title: SITE.tagline, path: "/" });
+export const metadata: Metadata = buildMetadata({ title: SITE.homeTitle, path: "/" });
 
 export default function HomePage() {
   return (
