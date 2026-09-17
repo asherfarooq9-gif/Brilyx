@@ -62,6 +62,20 @@ export function ServiceCarousel() {
           <p className="max-w-xl text-pretty text-sm text-muted-foreground sm:text-base">
             Previous, next, or tap a dot to see what each engagement covers.
           </p>
+          <nav aria-label="All services" className="mt-2">
+            <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm">
+              {SERVICES.map((service) => (
+                <li key={service.slug}>
+                  <Link
+                    href={`/services/${service.slug}`}
+                    className="font-medium text-foreground underline-offset-4 hover:underline"
+                  >
+                    {service.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
 
         <div className="mt-12 sm:mt-14">

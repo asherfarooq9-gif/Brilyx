@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { NAV_LINKS, SITE, SOCIAL_LINKS, whatsappUrl } from "@/lib/site";
+import { SERVICES } from "@/lib/services";
 
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
     <footer className="border-t border-border bg-background">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.5fr_1fr_1fr] lg:px-8">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:px-8">
         <div className="flex flex-col gap-3">
           <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
             <span className="flex h-7 w-7 items-center justify-center rounded-md brand-gradient text-sm font-bold text-white">
@@ -44,6 +45,21 @@ export function Footer() {
               className="text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
               {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <nav aria-label="Services" className="flex flex-col gap-3">
+          <span className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
+            Services
+          </span>
+          {SERVICES.map((service) => (
+            <Link
+              key={service.slug}
+              href={`/services/${service.slug}`}
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {service.title}
             </Link>
           ))}
         </nav>

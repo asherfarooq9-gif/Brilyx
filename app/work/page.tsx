@@ -25,9 +25,9 @@ const HERO_ITEMS: HeroCarouselItem[] = PROJECTS.map((project, i) => ({
 }));
 
 export const metadata: Metadata = buildMetadata({
-  title: "Case Studies: Web, App & AI Projects We've Shipped",
+  title: "Web, App & AI Case Studies | Brilyx",
   description:
-    "Websites, apps, AI automations, and chatbots Brilyx has designed and built for real clients, grouped by discipline, with the live sites linked.",
+    "Case studies from Brilyx — marketing sites, mobile apps, and AI systems for clinics and local businesses, grouped by discipline.",
   path: "/work",
 });
 

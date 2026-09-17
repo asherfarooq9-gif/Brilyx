@@ -18,7 +18,7 @@ export function ServiceHighlights() {
       <Stagger className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {SERVICES.map((service) => (
           <StaggerItem key={service.slug} className="h-full">
-            <ServiceCard service={service} href={`/services#${service.slug}`} />
+            <ServiceCard service={service} href={`/services/${service.slug}`} />
           </StaggerItem>
         ))}
       </Stagger>

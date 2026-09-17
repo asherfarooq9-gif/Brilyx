@@ -11,9 +11,9 @@ import { cn } from "@/lib/cn";
 import { whatsappUrl } from "@/lib/site";
 
 export const metadata: Metadata = buildMetadata({
-  title: "AI, Web & App Development Services",
+  title: "AI, Web & App Development Services | Brilyx",
   description:
-    "AI/ML development, app development, web development, AI automations, and chatbots — five disciplines, one delivery team, fixed-scope engagements.",
+    "AI/ML, mobile apps, Next.js sites, AI automations, and custom chatbots — five disciplines, one team, fixed-scope builds shipped to production.",
   path: "/services",
 });
 

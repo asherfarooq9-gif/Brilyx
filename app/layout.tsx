@@ -30,7 +30,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name} — ${SITE.tagline}`,
+    default: SITE.homeTitle,
     template: `%s · ${SITE.name}`,
   },
   description: SITE.description,
@@ -50,13 +50,22 @@ export const metadata: Metadata = {
     siteName: SITE.name,
     locale: SITE.locale,
     url: SITE.url,
-    title: `${SITE.name} — ${SITE.tagline}`,
+    title: SITE.homeTitle,
     description: SITE.description,
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: SITE.homeTitle,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE.name} — ${SITE.tagline}`,
+    title: SITE.homeTitle,
     description: SITE.description,
+    images: ["/opengraph-image"],
   },
   robots: { index: true, follow: true },
 };

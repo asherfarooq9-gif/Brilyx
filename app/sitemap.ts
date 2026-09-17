@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { NAV_LINKS, SITE } from "@/lib/site";
 import { SERVICES } from "@/lib/services";
-import { PROJECTS } from "@/lib/portfolio";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
@@ -20,12 +19,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  const projectEntries = PROJECTS.map((project) => ({
-    url: `${SITE.url}/work/${project.slug}`,
-    lastModified,
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
-
-  return [...navEntries, ...serviceEntries, ...projectEntries];
+  return [...navEntries, ...serviceEntries];
 }

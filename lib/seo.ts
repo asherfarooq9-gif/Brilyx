@@ -5,6 +5,16 @@ interface PageSeoInput {
   title: string;
   description?: string;
   path?: string;
+  /** Force absolute title (no layout `%s · Brilyx` template). Auto when title already includes `| Brilyx` or `Brilyx:`. */
+  absolute?: boolean;
+}
+
+const OG_IMAGE = "/opengraph-image";
+
+function shouldUseAbsoluteTitle(title: string, absolute: boolean | undefined, path: string): boolean {
+  if (absolute !== undefined) return absolute;
+  if (path === "/") return true;
+  return title.includes("| Brilyx") || title.includes("Brilyx:");
 }
 
 /**
@@ -15,26 +25,37 @@ export function buildMetadata({
   title,
   description = SITE.description,
   path = "/",
+  absolute,
 }: PageSeoInput): Metadata {
   const url = path === "/" ? SITE.url : `${SITE.url}${path}`;
-  const fullTitle = path === "/" ? `${SITE.name} — ${SITE.tagline}` : `${title} · ${SITE.name}`;
+  const useAbsolute = shouldUseAbsoluteTitle(title, absolute, path);
+  const displayTitle = useAbsolute ? title : `${title} · ${SITE.name}`;
 
   return {
-    title: path === "/" ? { absolute: fullTitle } : title,
+    title: useAbsolute ? { absolute: title } : title,
     description,
     alternates: { canonical: url },
     openGraph: {
       type: "website",
       siteName: SITE.name,
-      title: fullTitle,
+      title: displayTitle,
       description,
       url,
       locale: SITE.locale,
+      images: [
+        {
+          url: OG_IMAGE,
+          width: 1200,
+          height: 630,
+          alt: displayTitle,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
-      title: fullTitle,
+      title: displayTitle,
       description,
+      images: [OG_IMAGE],
     },
   };
 }
