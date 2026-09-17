@@ -78,7 +78,7 @@ export function ProjectCard({ project, showCategory = true, className }: Project
         </span>
       ) : (
         <span className="mt-auto inline-flex items-center gap-1 pt-2 text-sm font-medium text-foreground">
-          View case study
+          View live site
           <span className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden>
             &rarr;
           </span>
@@ -87,8 +87,24 @@ export function ProjectCard({ project, showCategory = true, className }: Project
     </article>
   );
 
+  const href = project.url ?? "/work";
+  const external = Boolean(project.url);
+
+  if (external) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block h-full rounded-xl focus-visible:outline-none"
+      >
+        {body}
+      </a>
+    );
+  }
+
   return (
-    <Link href={`/work/${project.slug}`} className="block h-full rounded-xl focus-visible:outline-none">
+    <Link href={href} className="block h-full rounded-xl focus-visible:outline-none">
       {body}
     </Link>
   );

@@ -15,7 +15,7 @@ export function WorkShowcase() {
     category: getCategoryLabel(project.category),
     badge: project.name.charAt(0).toUpperCase(),
     image: project.image,
-    href: `/work/${project.slug}`,
+    href: project.url ?? "/work",
   }));
 
   return (

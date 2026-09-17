@@ -5,22 +5,29 @@ import { cn } from "@/lib/cn";
 
 export interface BreadcrumbItem {
   name: string;
-  /** Absolute path on this site, e.g. `/services`. Omit on the current page. */
+  /** Absolute path on this site, e.g. `/services`. Omit only when unknown. */
   href?: string;
+}
+
+function toAbsolute(path: string): string {
+  return path === "/" ? SITE.url : `${SITE.url}${path}`;
 }
 
 function breadcrumbJsonLd(items: readonly BreadcrumbItem[]) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: items.map((item, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      name: item.name,
-      ...(item.href
-        ? { item: item.href === "/" ? SITE.url : `${SITE.url}${item.href}` }
-        : {}),
-    })),
+    itemListElement: items.map((item, index) => {
+      const entry: Record<string, unknown> = {
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.name,
+      };
+      if (item.href) {
+        entry.item = toAbsolute(item.href);
+      }
+      return entry;
+    }),
   };
 }
 
