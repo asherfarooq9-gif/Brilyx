@@ -87,7 +87,17 @@ export function Footer() {
           <span>
             &copy; {year} {SITE.name}. All rights reserved.
           </span>
-          <span>Engineering Intelligence. Building Tomorrow.</span>
+          <span className="flex flex-wrap items-center gap-3">
+            <Link href="/privacy" className="hover:text-foreground hover:underline underline-offset-4">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-foreground hover:underline underline-offset-4">
+              Terms
+            </Link>
+            <Link href="/blog" className="hover:text-foreground hover:underline underline-offset-4">
+              Blog
+            </Link>
+          </span>
         </div>
       </div>
     </footer>
