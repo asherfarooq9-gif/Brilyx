@@ -11,7 +11,7 @@ import { TeamAvatar } from "@/components/ui/TeamAvatar";
 export const metadata: Metadata = buildMetadata({
   title: "About Brilyx: Engineering Studio & Team",
   description:
-    "Brilyx pairs machine learning engineers with product builders to ship production systems, not demos. Meet the team and how we work.",
+    "Brilyx pairs machine learning engineers with product builders to ship production systems, not demos. Remote-first from Pakistan, working with clients worldwide. Meet the team and how we work.",
   path: "/about",
 });
 
@@ -137,6 +137,18 @@ export default function AboutPage() {
             ))}
           </Stagger>
         </div>
+      </section>
+
+      
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+        <Reveal>
+          <h2 className="text-2xl font-semibold tracking-tight text-foreground">Where we work</h2>
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted-foreground">
+            Brilyx is remote-first, based in Pakistan, and delivers for clients internationally.
+            Same-day overlap with South Asia and flexible hours for US, UK, EU, and Middle East teams.
+            We do not lock you into a black-box platform — you own the codebase.
+          </p>
+        </Reveal>
       </section>
 
       <CtaBanner />

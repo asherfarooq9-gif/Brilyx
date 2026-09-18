@@ -5,6 +5,7 @@ import { SERVICES, getService, type ServiceSlug } from "@/lib/services";
 import { SITE } from "@/lib/site";
 import { buildMetadata } from "@/lib/seo";
 import { getServicePageContent, SERVICE_PAGE_SEO } from "@/lib/service-page-content";
+import { BLOG_POSTS } from "@/lib/blog";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ServiceIcon } from "@/components/ui/ServiceIcon";
 import { ServiceImage } from "@/components/ui/ServiceImage";
@@ -274,6 +275,37 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
           </div>
         </div>
       </section>
+
+      
+      {(() => {
+        const relatedPosts = BLOG_POSTS.filter((post) =>
+          post.relatedServiceSlugs.includes(service.slug),
+        ).slice(0, 3);
+        if (relatedPosts.length === 0) return null;
+        return (
+          <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6 lg:px-8">
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground">From the blog</h2>
+            <ul className="mt-6 flex flex-col gap-4">
+              {relatedPosts.map((post) => (
+                <li key={post.slug}>
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="text-base font-medium text-foreground underline-offset-4 hover:underline"
+                  >
+                    {post.title}
+                  </Link>
+                  <p className="mt-1 text-sm text-muted-foreground">{post.description}</p>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-6 text-sm">
+              <Link href="/blog" className="font-medium text-foreground underline-offset-4 hover:underline">
+                See all articles
+              </Link>
+            </p>
+          </section>
+        );
+      })()}
 
       <CtaBanner
         title={content.cta.title}

@@ -68,7 +68,7 @@ export default function ContactPage() {
             <div>
               <h2 className="text-lg font-semibold text-foreground">Where we are</h2>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                Remote-first · working worldwide
+                Remote-first from Pakistan · working with clients worldwide
               </p>
             </div>
             <div>
