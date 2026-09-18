@@ -10,11 +10,18 @@ const WORK_CASE_SLUGS = [
 const nextConfig: NextConfig = {
   reactCompiler: true,
   async redirects() {
-    return WORK_CASE_SLUGS.map((slug) => ({
-      source: `/work/${slug}`,
-      destination: "/work",
-      permanent: true,
-    }));
+    return [
+      ...WORK_CASE_SLUGS.map((slug) => ({
+        source: `/work/${slug}`,
+        destination: "/work",
+        permanent: true,
+      })),
+      {
+        source: "/blog/whatsapp-chatbot-for-clinics",
+        destination: "/blog/whatsapp-chatbot-development-company",
+        permanent: true,
+      },
+    ];
   },
 };
 
