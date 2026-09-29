@@ -57,10 +57,11 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
   const serviceJsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
+    "@id": `${SITE.url}/services/${service.slug}#service`,
     serviceType: service.title,
     name: service.title,
     description: content.seo.description,
-    provider: { "@type": "Organization", name: SITE.name, url: SITE.url },
+    provider: { "@id": `${SITE.url}/#organization` },
     areaServed: "Worldwide",
     url: `${SITE.url}/services/${service.slug}`,
   };

@@ -41,19 +41,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const articleJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
+    "@id": `${SITE.url}/blog/${post.slug}#article`,
     headline: post.title,
     description: post.description,
     datePublished: post.date,
     dateModified: post.date,
-    author: { "@type": "Organization", name: SITE.name, url: SITE.url },
-    publisher: {
-      "@type": "Organization",
-      name: SITE.name,
-      url: SITE.url,
-      logo: { "@type": "ImageObject", url: `${SITE.url}/org-logo.png?v=20260930` },
-    },
-    mainEntityOfPage: `${SITE.url}/blog/${post.slug}`,
+    inLanguage: "en",
+    image: `${SITE.url}/opengraph-image`,
+    author: { "@id": `${SITE.url}/#organization` },
+    publisher: { "@id": `${SITE.url}/#organization` },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE.url}/blog/${post.slug}` },
   };
 
   return (

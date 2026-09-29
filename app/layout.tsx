@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { SITE, SOCIAL_LINKS } from "@/lib/site";
@@ -76,7 +77,17 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: "/apple-icon.png?v=20260930", sizes: "180x180" }],
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
 };
 
 export const viewport: Viewport = {
@@ -88,18 +99,26 @@ export const viewport: Viewport = {
 const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": `${SITE.url}/#website`,
   name: SITE.name,
   url: SITE.url,
   description: SITE.description,
-  publisher: { "@type": "Organization", name: SITE.name, url: SITE.url },
+  inLanguage: "en",
+  publisher: { "@id": `${SITE.url}/#organization` },
 };
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": `${SITE.url}/#organization`,
   name: SITE.name,
   url: SITE.url,
-  logo: `${SITE.url}/org-logo.png?v=20260930`,
+  logo: {
+    "@type": "ImageObject",
+    url: `${SITE.url}/org-logo.png?v=20260930`,
+    width: 512,
+    height: 512,
+  },
   description: SITE.description,
   email: SITE.email,
   telephone: SITE.phoneE164,
@@ -113,7 +132,7 @@ const organizationJsonLd = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html
       lang="en"
