@@ -51,7 +51,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       "@type": "Organization",
       name: SITE.name,
       url: SITE.url,
-      logo: { "@type": "ImageObject", url: `${SITE.url}/org-logo.png` },
+      logo: { "@type": "ImageObject", url: `${SITE.url}/org-logo.png?v=20260930` },
     },
     mainEntityOfPage: `${SITE.url}/blog/${post.slug}`,
   };

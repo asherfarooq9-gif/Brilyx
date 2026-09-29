@@ -67,6 +67,15 @@ export const metadata: Metadata = {
     description: SITE.description,
     images: ["/opengraph-image"],
   },
+  // A versioned URL prompts search engines to fetch the new mark instead of
+  // retaining a previously cached favicon at the same address.
+  icons: {
+    icon: [
+      { url: "/favicon.ico?v=20260930", sizes: "any" },
+      { url: "/icon.png?v=20260930", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/apple-icon.png?v=20260930", sizes: "180x180" }],
+  },
   robots: { index: true, follow: true },
 };
 
@@ -90,7 +99,7 @@ const organizationJsonLd = {
   "@type": "Organization",
   name: SITE.name,
   url: SITE.url,
-  logo: `${SITE.url}/org-logo.png`,
+  logo: `${SITE.url}/org-logo.png?v=20260930`,
   description: SITE.description,
   email: SITE.email,
   telephone: SITE.phoneE164,
